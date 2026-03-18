@@ -75,7 +75,7 @@
   /* === FORM CARDS === */
   .form-card {
     background: #fff; border: 1px solid #EDF2F7; border-radius: 14px;
-    padding: 32px; margin-bottom: 24px;
+    padding: 36px 40px; margin-bottom: 28px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .form-card h2 {
@@ -86,12 +86,12 @@
   }
   .form-group { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
   .form-group label {
-    font-size: 13px; font-weight: 600; color: #425B76;
+    font-size: 14px; font-weight: 600; color: #425B76;
     text-transform: uppercase; letter-spacing: 0.3px;
   }
   .form-group input, .form-group select {
-    padding: 10px 14px; border: 1px solid #E2E8F0; border-radius: 8px;
-    font-size: 15px; font-family: 'Roboto', sans-serif; color: #2D3748;
+    padding: 12px 16px; border: 1px solid #E2E8F0; border-radius: 8px;
+    font-size: 16px; font-family: 'Roboto', sans-serif; color: #2D3748;
     background: #fff; transition: border 0.2s;
   }
   .form-group input:focus, .form-group select:focus {
@@ -109,27 +109,27 @@
     display: flex; gap: 16px; margin-bottom: 8px;
   }
   .role-option {
-    flex: 1; padding: 18px 20px; border: 2px solid #EDF2F7; border-radius: 12px;
+    flex: 1; padding: 24px 24px; border: 2px solid #EDF2F7; border-radius: 12px;
     cursor: pointer; transition: all 0.25s; text-align: center;
   }
   .role-option:hover { border-color: #E34E27; background: rgba(227,78,39,0.03); }
   .role-option.selected { border-color: #E34E27; background: rgba(227,78,39,0.06); }
   .role-option input { display: none; }
   .role-option .role-title {
-    font-size: 15px; font-weight: 700; color: #1A202C; margin-bottom: 4px;
+    font-size: 17px; font-weight: 700; color: #1A202C; margin-bottom: 6px;
   }
-  .role-option .role-desc { font-size: 12px; color: #718096; }
+  .role-option .role-desc { font-size: 13px; color: #718096; line-height: 1.5; }
 
   /* === QUESTION CARDS === */
   .q-card {
     background: #fff; border: 1px solid #EDF2F7; border-radius: 14px;
-    padding: 28px 32px; margin-bottom: 20px;
+    padding: 32px 36px; margin-bottom: 24px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04); position: relative;
   }
   .q-badge {
     display: inline-flex; align-items: center; justify-content: center;
-    width: 32px; height: 32px; border-radius: 50%; font-size: 14px; font-weight: 700;
-    color: #fff; margin-bottom: 12px;
+    width: 36px; height: 36px; border-radius: 50%; font-size: 15px; font-weight: 700;
+    color: #fff; margin-bottom: 14px;
   }
   .q-badge.orange { background: #E34E27; }
   .q-badge.amber { background: #EFA524; }
@@ -138,9 +138,9 @@
     font-size: 17px; font-weight: 600; color: #1A202C; margin-bottom: 8px; line-height: 1.5;
   }
   .q-dims {
-    font-size: 11px; color: #A0AEC0; margin-bottom: 14px; text-transform: uppercase; letter-spacing: 0.5px;
+    font-size: 12px; color: #A0AEC0; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;
   }
-  .q-options { display: flex; flex-direction: column; gap: 8px; }
+  .q-options { display: flex; flex-direction: column; gap: 10px; }
   .q-opt {
     padding: 14px 20px; border: 1px solid #EDF2F7; border-radius: 10px;
     cursor: pointer; font-size: 15px; color: #2D3748; transition: all 0.2s;
@@ -161,11 +161,11 @@
   }
 
   /* Checklist for BU Q10 */
-  .q-checklist { display: flex; flex-direction: column; gap: 8px; }
+  .q-checklist { display: flex; flex-direction: column; gap: 10px; }
   .q-check-item {
-    padding: 12px 16px; border: 1px solid #EDF2F7; border-radius: 10px;
-    cursor: pointer; font-size: 14px; color: #2D3748; transition: all 0.2s;
-    display: flex; align-items: center; gap: 10px;
+    padding: 14px 20px; border: 1px solid #EDF2F7; border-radius: 10px;
+    cursor: pointer; font-size: 15px; color: #2D3748; transition: all 0.2s;
+    display: flex; align-items: center; gap: 12px;
   }
   .q-check-item:hover { border-color: #EFA524; background: rgba(239,165,36,0.03); }
   .q-check-item.checked { border-color: #EFA524; background: rgba(239,165,36,0.08); font-weight: 600; }
@@ -198,7 +198,7 @@
   /* === PAIN SCENARIO CARDS === */
   .ps-card {
     background: #fff; border: 1px solid #EDF2F7; border-radius: 14px;
-    padding: 28px 32px; margin-bottom: 20px;
+    padding: 32px 36px; margin-bottom: 24px;
     box-shadow: 0 1px 3px rgba(0,0,0,0.04);
     border-left: 4px solid #E2E8F0; transition: border-color 0.3s;
   }
@@ -208,46 +208,46 @@
   .ps-card.ps-4 { border-left-color: #E53E3E; }
   .ps-card.ps-5 { border-left-color: #3182CE; }
   .ps-title {
-    font-size: 16px; font-weight: 700; color: #1A202C; margin-bottom: 6px;
+    font-size: 18px; font-weight: 700; color: #1A202C; margin-bottom: 8px;
   }
   .ps-desc {
-    font-size: 14px; color: #718096; line-height: 1.6; margin-bottom: 16px;
+    font-size: 15px; color: #718096; line-height: 1.7; margin-bottom: 18px;
   }
   .ps-toggle {
     display: flex; gap: 12px; margin-bottom: 16px;
   }
   .ps-toggle-btn {
-    padding: 8px 24px; border-radius: 8px; font-size: 14px; font-weight: 600;
+    padding: 10px 28px; border-radius: 8px; font-size: 15px; font-weight: 600;
     cursor: pointer; transition: all 0.2s; border: 2px solid #E2E8F0;
     background: #fff; color: #718096;
   }
   .ps-toggle-btn.active-yes { border-color: #E34E27; background: rgba(227,78,39,0.08); color: #E34E27; }
   .ps-toggle-btn.active-no { border-color: #425B76; background: rgba(66,91,118,0.08); color: #425B76; }
   .ps-followup {
-    display: none; padding: 20px; background: #F7FAFC; border-radius: 10px;
-    margin-top: 12px;
+    display: none; padding: 24px; background: #F7FAFC; border-radius: 10px;
+    margin-top: 14px;
   }
   .ps-followup.open { display: block; animation: fadeIn 0.3s ease; }
-  .ps-followup .form-group { margin-bottom: 12px; }
-  .ps-followup label { font-size: 12px; font-weight: 600; color: #425B76; }
+  .ps-followup .form-group { margin-bottom: 14px; }
+  .ps-followup label { font-size: 13px; font-weight: 600; color: #425B76; }
   .ps-followup select {
-    padding: 8px 12px; border: 1px solid #E2E8F0; border-radius: 8px;
-    font-size: 14px; font-family: 'Roboto', sans-serif; width: 100%;
+    padding: 10px 14px; border: 1px solid #E2E8F0; border-radius: 8px;
+    font-size: 15px; font-family: 'Roboto', sans-serif; width: 100%;
     color: #2D3748; background: #fff;
   }
 
   /* === BUTTONS === */
   .btn-orange {
     background: linear-gradient(135deg, #E34E27, #EFA524);
-    color: #fff; border: none; padding: 14px 36px; border-radius: 10px;
-    font-size: 15px; font-weight: 700; cursor: pointer;
+    color: #fff; border: none; padding: 16px 42px; border-radius: 10px;
+    font-size: 16px; font-weight: 700; cursor: pointer;
     transition: transform 0.15s, box-shadow 0.2s;
     font-family: 'Roboto', sans-serif;
   }
-  .btn-orange:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(227,78,39,0.3); }
+  .btn-orange:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(227,78,39,0.3); }
   .btn-outline {
     background: transparent; color: #E34E27; border: 2px solid #E34E27;
-    padding: 12px 32px; border-radius: 10px; font-size: 15px; font-weight: 700;
+    padding: 14px 36px; border-radius: 10px; font-size: 16px; font-weight: 700;
     cursor: pointer; transition: all 0.2s; font-family: 'Roboto', sans-serif;
   }
   .btn-outline:hover { background: rgba(227,78,39,0.06); }
@@ -263,8 +263,8 @@
   /* === RESULTS === */
   .results-hero {
     background: linear-gradient(135deg, #1A202C 0%, #2D3748 60%, #425B76 100%);
-    border-radius: 16px; padding: 48px 40px; color: #fff;
-    margin-bottom: 32px; text-align: center; position: relative; overflow: hidden;
+    border-radius: 16px; padding: 56px 48px; color: #fff;
+    margin-bottom: 36px; text-align: center; position: relative; overflow: hidden;
   }
   .results-hero::after {
     content: ''; position: absolute; top: -80px; right: -80px;
@@ -287,13 +287,13 @@
   /* Dimension bars */
   .dim-bars { margin-top: 32px; }
   .dim-bar-row {
-    display: flex; align-items: center; gap: 14px; margin-bottom: 14px;
+    display: flex; align-items: center; gap: 16px; margin-bottom: 16px;
   }
   .dim-label {
-    width: 180px; font-size: 13px; font-weight: 600; color: #A0AEC0; text-align: right;
+    width: 200px; font-size: 14px; font-weight: 600; color: #A0AEC0; text-align: right;
   }
   .dim-track {
-    flex: 1; height: 10px; background: rgba(255,255,255,0.1); border-radius: 5px;
+    flex: 1; height: 12px; background: rgba(255,255,255,0.1); border-radius: 6px;
     overflow: hidden;
   }
   .dim-fill {
@@ -302,16 +302,16 @@
     transition: width 1s ease;
   }
   .dim-val {
-    width: 40px; font-size: 14px; font-weight: 700; color: #EFA524;
+    width: 45px; font-size: 16px; font-weight: 700; color: #EFA524;
   }
 
   /* Cost of Inaction */
   .coi-section {
     background: linear-gradient(135deg, #1A202C 0%, #2D3748 100%);
-    border-radius: 16px; padding: 40px; color: #fff; margin-bottom: 32px;
+    border-radius: 16px; padding: 48px; color: #fff; margin-bottom: 36px;
   }
   .coi-total {
-    font-size: 48px; font-weight: 900; color: #E34E27; margin-bottom: 8px;
+    font-size: 52px; font-weight: 900; color: #E34E27; margin-bottom: 10px;
   }
   .coi-table {
     width: 100%; border-collapse: collapse; margin-top: 20px;
@@ -322,7 +322,7 @@
     letter-spacing: 0.5px;
   }
   .coi-table td {
-    padding: 12px; font-size: 14px; color: #E2E8F0;
+    padding: 14px; font-size: 15px; color: #E2E8F0;
     border-bottom: 1px solid rgba(255,255,255,0.05);
   }
   .coi-table td:last-child { font-weight: 700; color: #EFA524; text-align: right; }
@@ -330,20 +330,20 @@
   /* Recommendation section */
   .rec-section {
     background: #fff; border: 1px solid #EDF2F7; border-radius: 14px;
-    padding: 36px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    padding: 40px 44px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   }
   .rec-section h2 {
-    font-size: 20px; font-weight: 700; color: #1A202C; margin-bottom: 20px;
+    font-size: 22px; font-weight: 700; color: #1A202C; margin-bottom: 24px;
   }
   .phase-card {
-    border-left: 3px solid #E34E27; padding: 20px 24px; margin-bottom: 16px;
-    background: #F7FAFC; border-radius: 0 10px 10px 0;
+    border-left: 4px solid #E34E27; padding: 24px 28px; margin-bottom: 20px;
+    background: #F7FAFC; border-radius: 0 12px 12px 0;
   }
-  .phase-card h3 { font-size: 16px; font-weight: 700; color: #E34E27; margin-bottom: 6px; }
-  .phase-card .phase-time { font-size: 12px; color: #EFA524; font-weight: 600; margin-bottom: 8px; }
-  .phase-card p { font-size: 14px; color: #4A5568; line-height: 1.6; }
-  .phase-card ul { margin-top: 8px; padding-left: 18px; }
-  .phase-card li { font-size: 14px; color: #4A5568; line-height: 1.7; }
+  .phase-card h3 { font-size: 18px; font-weight: 700; color: #E34E27; margin-bottom: 8px; }
+  .phase-card .phase-time { font-size: 13px; color: #EFA524; font-weight: 600; margin-bottom: 10px; }
+  .phase-card p { font-size: 15px; color: #4A5568; line-height: 1.7; }
+  .phase-card ul { margin-top: 10px; padding-left: 20px; }
+  .phase-card li { font-size: 15px; color: #4A5568; line-height: 1.8; }
 
   .innominds-ref {
     display: inline-block; background: rgba(227,78,39,0.08); color: #E34E27;
