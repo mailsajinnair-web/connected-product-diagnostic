@@ -371,15 +371,36 @@
   @keyframes spin { to { transform: rotate(360deg); } }
 
   /* Responsive */
+  /* Hero grids */
+  .hero-stats-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  .hero-compare-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0; border-radius: 10px; overflow: hidden; }
+  .hero-deliver-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+  @media (max-width: 900px) {
+    .main { padding: 24px; }
+    .hero-stats-grid { grid-template-columns: 1fr; gap: 12px; }
+    .hero-compare-grid { grid-template-columns: 1fr; }
+    .hero-deliver-grid { grid-template-columns: 1fr; }
+  }
   @media (max-width: 700px) {
-    .main { padding: 20px; }
+    .main { padding: 16px; }
     .form-row { grid-template-columns: 1fr; }
     .role-options { flex-direction: column; }
-    .hero-card { padding: 32px 24px; }
-    .hero-card h1 { font-size: 22px; }
+    .hero-card { padding: 28px 20px; }
+    .hero-card h1 { font-size: 24px; }
+    .form-card { padding: 24px 20px; }
+    .q-card { padding: 24px 20px; }
+    .ps-card { padding: 24px 20px; }
     .score-big { font-size: 56px; }
-    .dim-label { width: 100px; font-size: 11px; }
-    .topbar { padding: 0 16px; }
+    .dim-bar-row { flex-wrap: wrap; }
+    .dim-label { width: 100%; font-size: 12px; text-align: left; }
+    .topbar { padding: 0 12px; }
+    .topbar img { height: 22px; }
+    .results-hero { padding: 32px 20px; }
+    .coi-section { padding: 28px 20px; }
+    .rec-section { padding: 28px 20px; }
+    .coi-total { font-size: 36px; }
+    .btn-orange { padding: 14px 24px; font-size: 15px; }
+    .btn-row { flex-wrap: wrap; }
   }
 </style>
 </head>
@@ -414,7 +435,7 @@
   </div>
 
   <!-- BENCHMARK STATS STRIP -->
-  <div style="background:#1A202C;padding:24px 48px;display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;border-bottom:1px solid #2D3748;">
+  <div class="hero-stats-grid" style="background:#1A202C;padding:24px 48px;border-bottom:1px solid #2D3748;">
     <div style="text-align:center;">
       <div style="font-size:32px;font-weight:900;color:#E34E27;line-height:1;">4.5 mo</div>
       <div style="font-size:12px;color:#A0AEC0;margin-top:4px;">Median launch delay for connected products below Level 3 maturity</div>
@@ -437,7 +458,7 @@
     <!-- Today vs. With Innominds -->
     <div style="margin-bottom:28px;">
       <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#EFA524;margin-bottom:16px;">Today vs. After Diagnostic-Driven Transformation</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:10px;overflow:hidden;">
+      <div class="hero-compare-grid">
         <div style="background:rgba(229,62,62,0.08);padding:20px;border-right:1px solid #2D3748;">
           <div style="font-size:12px;font-weight:700;color:#FC8181;margin-bottom:10px;">WITHOUT INTEGRATION COHERENCE</div>
           <div style="font-size:12px;color:#A0AEC0;line-height:1.8;">
@@ -460,7 +481,7 @@
     </div>
 
     <!-- What you'll receive -->
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-bottom:24px;">
+    <div class="hero-deliver-grid">
       <div style="background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:20px;text-align:center;">
         <div style="font-size:11px;font-weight:700;letter-spacing:1px;color:#EFA524;margin-bottom:6px;">01 &mdash; SCORE</div>
         <div style="font-size:13px;color:#E2E8F0;line-height:1.5;">Maturity score across 6 dimensions using CMMI, Gartner, and Forrester frameworks</div>
@@ -687,6 +708,7 @@
     </div>
   </div>
 
+  <div id="ps-validation-msg" style="color:#E53E3E;font-size:13px;font-weight:600;margin-top:12px;display:none;">Please fill in the follow-up details for scenarios you marked "Yes", or change them to "No".</div>
   <div class="btn-row">
     <button class="btn-back" onclick="goToStep(2)">&larr; Back</button>
     <button class="btn-orange" onclick="goToStep(4)">Calculate Results &rarr;</button>
@@ -997,10 +1019,11 @@ function goToStep(step) {
     }
     if (currentStep <= 3 && step >= 4) {
       if (currentStep === 3) {
+        // Validate pain scenario dropdowns
+        if (!validateStep3()) return;
         calculateResults();
         renderResults();
       } else if (currentStep < 3) {
-        // Can't jump to results without completing intermediate steps
         step = currentStep + 1;
       }
     }
@@ -1008,10 +1031,6 @@ function goToStep(step) {
   // Going backward to step 2 — rebuild questions if needed
   if (step === 2 && currentStep > 2 && !document.getElementById('questions-container').innerHTML) {
     buildQuestions();
-  }
-  // If going back to step 4 and results already rendered, don't recalculate
-  if (step === 4 && currentStep > 4) {
-    // already rendered
   }
 
   currentStep = step;
@@ -1106,6 +1125,33 @@ function validateStep2() {
     }
   }
   return allAnswered;
+}
+
+function validateStep3() {
+  const psDropdowns = {
+    1: ['ps1_weeks', 'ps1_revenue'],
+    2: ['ps2_variants', 'ps2_cost'],
+    3: ['ps3_incidents', 'ps3_costper'],
+    4: ['ps4_severity', 'ps4_cost'],
+    5: ['ps5_months', 'ps5_revenue']
+  };
+  let ok = true;
+  for (let num = 1; num <= 5; num++) {
+    if (painStates[num]) {
+      psDropdowns[num].forEach(id => {
+        const el = document.getElementById(id);
+        if (el && (!el.value || el.value === '')) {
+          el.style.borderColor = '#E53E3E';
+          ok = false;
+        } else if (el) {
+          el.style.borderColor = '';
+        }
+      });
+    }
+  }
+  const msg = document.getElementById('ps-validation-msg');
+  if (msg) msg.style.display = ok ? 'none' : 'block';
+  return ok;
 }
 
 // ================================================================
@@ -2820,15 +2866,16 @@ function autoload() {
     if (data.painStates) {
       painStates = data.painStates;
       for (let num = 1; num <= 5; num++) {
+        const followup = document.getElementById('ps' + num + '-followup');
+        const card = followup?.closest('.ps-card');
+        if (!card) continue;
+        const btns = card.querySelectorAll('.ps-toggle-btn');
         if (painStates[num]) {
-          const followup = document.getElementById('ps' + num + '-followup');
           if (followup) followup.classList.add('open');
-          // Restore toggle button visual
-          const card = followup?.closest('.ps-card');
-          if (card) {
-            const yesBtn = card.querySelector('.ps-toggle-btn');
-            if (yesBtn) yesBtn.classList.add('active-yes');
-          }
+          if (btns[0]) btns[0].classList.add('active-yes'); // "Yes" button
+        } else if (data.painStates[num] === false) {
+          // User explicitly clicked No
+          if (btns[1]) btns[1].classList.add('active-no'); // "No" button
         }
       }
     }
