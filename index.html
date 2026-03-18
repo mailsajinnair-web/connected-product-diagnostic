@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Connected Product Integration Diagnostic v4 - Innominds</title>
 <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-<script src="jspdf.umd.min.js"></script>
-<script src="jspdf.plugin.autotable.min.js"></script>
+<script src="jspdf.umd.min.js" defer></script>
+<script src="jspdf.plugin.autotable.min.js" defer></script>
 <style>
   * { margin: 0; padding: 0; box-sizing: border-box; }
   body {
@@ -114,7 +114,7 @@
   }
   .role-option:hover { border-color: #E34E27; background: rgba(227,78,39,0.03); }
   .role-option.selected { border-color: #E34E27; background: rgba(227,78,39,0.06); }
-  .role-option input { display: none; }
+  .role-option input { position: absolute; opacity: 0; width: 0; height: 0; }
   .role-option .role-title {
     font-size: 17px; font-weight: 700; color: #1A202C; margin-bottom: 6px;
   }
@@ -138,7 +138,7 @@
     font-size: 17px; font-weight: 600; color: #1A202C; margin-bottom: 8px; line-height: 1.5;
   }
   .q-dims {
-    font-size: 12px; color: #A0AEC0; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;
+    font-size: 12px; color: #718096; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 0.5px;
   }
   .q-options { display: flex; flex-direction: column; gap: 10px; }
   .q-opt {
@@ -510,24 +510,24 @@
     <h2>Let's Start &mdash; Your Profile</h2>
     <div class="form-row">
       <div class="form-group">
-        <label>Your Name *</label>
+        <label for="f_name">Your Name *</label>
         <input type="text" id="f_name" required placeholder="Jane Smith">
         <div class="error-msg" id="err_name">Please enter your name</div>
       </div>
       <div class="form-group">
-        <label>Company Name *</label>
+        <label for="f_company">Company Name *</label>
         <input type="text" id="f_company" required placeholder="Acme Corp">
         <div class="error-msg" id="err_company">Please enter company name</div>
       </div>
     </div>
     <div class="form-row">
       <div class="form-group">
-        <label>Email *</label>
+        <label for="f_email">Email *</label>
         <input type="email" id="f_email" required placeholder="jane@acme.com">
         <div class="error-msg" id="err_email">Please enter a valid email</div>
       </div>
       <div class="form-group">
-        <label>Industry *</label>
+        <label for="f_industry">Industry *</label>
         <select id="f_industry">
           <option value="">Select your industry</option>
           <option>Medical Devices</option>
@@ -558,18 +558,18 @@
 
     <div class="form-row" style="margin-top:20px;">
       <div class="form-group">
-        <label>Engineering Team Size *</label>
+        <label for="f_teamsize">Engineering Team Size *</label>
         <input type="number" id="f_teamsize" required placeholder="e.g. 50" min="1">
         <div class="error-msg" id="err_teamsize">Please enter team size</div>
       </div>
       <div class="form-group">
-        <label>Avg Fully-Loaded Cost per Engineer $/yr *</label>
+        <label for="f_engcost">Avg Fully-Loaded Cost per Engineer $/yr *</label>
         <input type="number" id="f_engcost" required placeholder="e.g. 180000" min="1">
         <div class="error-msg" id="err_engcost">Please enter cost per engineer</div>
       </div>
     </div>
     <div class="form-group">
-      <label>Projected Annual Revenue for Connected Product Line $ *</label>
+      <label for="f_revenue">Projected Annual Revenue for Connected Product Line $ *</label>
       <input type="number" id="f_revenue" required placeholder="e.g. 25000000" min="1" style="max-width:460px;">
       <div class="error-msg" id="err_revenue">Please enter projected revenue</div>
     </div>
@@ -1370,7 +1370,7 @@ function buildQuestions() {
       answers[i] = 0; // Default to 0 checked so validation passes
       html += `<div class="q-checklist" id="qcheck_${i}">`;
       q.checkItems.forEach((item, ci) => {
-        html += `<div class="q-check-item" onclick="toggleCheck(${i},${ci},this)">
+        html += `<div class="q-check-item" tabindex="0" role="checkbox" aria-checked="false" onclick="toggleCheck(${i},${ci},this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleCheck(${i},${ci},this)}">
           <div class="check-box"></div>
           <span>${item}</span>
         </div>`;
@@ -1379,7 +1379,7 @@ function buildQuestions() {
     } else {
       html += `<div class="q-options">`;
       q.opts.forEach((opt, oi) => {
-        html += `<div class="q-opt" onclick="selectAnswer(${i},${oi},this)">
+        html += `<div class="q-opt" tabindex="0" role="option" onclick="selectAnswer(${i},${oi},this)" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();selectAnswer(${i},${oi},this)}">
           <div class="radio-dot"></div>
           <span>${opt.text}</span>
         </div>`;
@@ -1627,10 +1627,12 @@ function val(id) {
   return el ? el.value : '';
 }
 
-function fmtM(n) {
-  if (n >= 1000000) return '$' + (n / 1000000).toFixed(1) + 'M';
-  if (n >= 1000) return '$' + (n / 1000).toFixed(0) + 'K';
-  return '$' + n.toFixed(0);
+
+function escapeHTML(str) {
+  if (!str) return '';
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
 }
 
 function fmtDollar(n) {
@@ -1703,8 +1705,8 @@ function renderResults() {
 
 function buildRecommendation() {
   const ctx = {
-    name: document.getElementById('f_name').value.split(' ')[0],
-    company: document.getElementById('f_company').value,
+    name: escapeHTML(document.getElementById('f_name').value.split(' ')[0]),
+    company: escapeHTML(document.getElementById('f_company').value),
     teamSize: parseInt(document.getElementById('f_teamsize').value),
     revenue: parseInt(document.getElementById('f_revenue').value),
     fmtRevenue: fmtDollar(parseInt(document.getElementById('f_revenue').value)),
