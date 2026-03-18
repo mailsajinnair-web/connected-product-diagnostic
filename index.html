@@ -738,32 +738,6 @@ let answers = {};
 let painStates = { 1: false, 2: false, 3: false, 4: false, 5: false };
 let computed = {};
 
-// Midpoint map for dollar/range strings
-const MID = {
-  '1-4': 2.5, '5-8': 6.5, '9-12': 10.5, '13-20': 16.5, '21+': 25,
-  '<$1M': 500000, '$1-5M': 3000000, '$5-10M': 7500000, '$10-25M': 17500000, '$25-50M': 37500000, '$50M+': 75000000,
-  '2-5': 3.5, '6-10': 8, '11-20': 15.5, '21-50': 35.5, '50+': 65,
-  '1': 1, '2': 2, '3': 3, '4': 4, '5+': 6,
-  '<$200K': 100000, '$200K-500K': 350000, '$500K-1M': 750000, '$1M-3M': 2000000, '$3M+': 4000000,
-  '<$50K': 25000, '$50-100K': 75000, '$100-250K': 175000, '$250-500K': 375000, '$500K+': 650000,
-  '1-2': 1.5, '3-5': 4, '6-10': 8, '11-20': 15.5, '21+': 30,
-  '<$10K': 5000, '$10-50K': 30000, '$50-100K': 75000, '$100-500K': 300000, '$500K+': 750000,
-  '25%': 0.25, '50%': 0.5, '75%': 0.75, '90%+': 0.95,
-  'Minor': 1, 'Moderate': 1.2, 'Major': 1.5, 'Critical': 2.0,
-  '<$50K': 25000, '$50-250K': 150000, '$250K-1M': 625000, '$1-5M': 3000000, '$5M+': 7500000,
-  '1-3': 2, '4-6': 5, '7-12': 9.5, '12+': 15,
-  '<$500K': 250000, '$500K-2M': 1250000, '$2-5M': 3500000, '$5-10M': 7500000, '$10M+': 15000000,
-  '1-3': 2, '4-6': 5, '7-10': 8.5, '11-20': 15.5, '20+': 25
-};
-
-function mid(val) {
-  if (val === undefined || val === '' || val === null) return 0;
-  if (MID[val] !== undefined) return MID[val];
-  // Try numeric
-  let n = parseFloat(val);
-  if (!isNaN(n)) return n;
-  return 0;
-}
 
 // ================================================================
 // QUESTION DEFINITIONS
@@ -1160,8 +1134,9 @@ function validateStep3() {
 let questionsBuiltForRole = '';
 function buildQuestions() {
   // Only rebuild if role changed — preserve answers when navigating back
-  if (questionsBuiltForRole === selectedRole && Object.keys(answers).length > 0) {
-    // Restore visual selections
+  if (questionsBuiltForRole === selectedRole && Object.keys(answers).length > 0
+      && document.getElementById('questions-container').innerHTML.trim() !== '') {
+    // DOM already has questions — just restore visual selections
     restoreQuestionSelections();
     return;
   }
@@ -1243,6 +1218,7 @@ function selectAnswer(qi, oi, el) {
   el.classList.add('selected');
   card.style.border = '';
   answers[qi] = oi;
+  if (typeof autosave === 'function') autosave();
 }
 
 // Checklist state for BU Q10
@@ -1255,6 +1231,7 @@ function toggleCheck(qi, ci, el) {
   let count = 0;
   for (let k in checkStates[qi]) { if (checkStates[qi][k]) count++; }
   answers[qi] = count; // store count as "answer"
+  if (typeof autosave === 'function') autosave();
 }
 
 // ================================================================
@@ -1277,6 +1254,7 @@ function togglePS(num, yes, btn) {
   } else {
     followup.classList.remove('open');
   }
+  if (typeof autosave === 'function') autosave();
 }
 
 // ================================================================
@@ -2885,7 +2863,7 @@ function autoload() {
         if (el) el.value = data.painDropdowns[id];
       }
     }
-  } catch(e) { console.warn('Autload error:', e); }
+  } catch(e) { console.warn('Autoload error:', e); }
 }
 
 // Autosave on any input change
