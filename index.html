@@ -737,6 +737,7 @@ let currentStep = 1;
 let selectedRole = '';
 let answers = {};
 let painStates = { 1: false, 2: false, 3: false, 4: false, 5: false };
+let painInteracted = { 1: false, 2: false, 3: false, 4: false, 5: false };
 let computed = {};
 
 
@@ -1250,6 +1251,7 @@ function toggleCheck(qi, ci, el) {
 // ================================================================
 function togglePS(num, yes, btn) {
   painStates[num] = yes;
+  painInteracted[num] = true;
   const card = btn.closest('.ps-card');
   card.querySelectorAll('.ps-toggle-btn').forEach(b => {
     b.classList.remove('active-yes', 'active-no');
@@ -1507,7 +1509,7 @@ function findAnswer(keyword) {
   for (let i = 0; i < at.length; i++) {
     if (at[i].q && at[i].q.toLowerCase().includes(keyword.toLowerCase())) return at[i].a;
   }
-  return 'N/A';
+  return '';  // Return falsy so || fallback chains work
 }
 
 function buildRecommendation() {
@@ -1520,16 +1522,16 @@ function buildRecommendation() {
   const at = computed.answerTexts || [];
   const getA = (i) => at[i] ? at[i].a : '';
   // Semantic lookups that work for both CTO and BU tracks:
-  const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0);
-  const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1);
-  const aDefects = findAnswer('interface mismatches') || findAnswer('variant') || getA(2);
-  const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3);
-  const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4);
-  const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5);
-  const aRepos = findAnswer('repos/build') || findAnswer('customer-reported') || getA(6);
-  const aDeploy = findAnswer('code committed') || findAnswer('roadmap items') || getA(7);
-  const aTalent = findAnswer('unfilled') || findAnswer('DELAYED entering') || getA(8);
-  const aRCA = findAnswer('root cause') || findAnswer('in-house capability') || getA(9);
+  const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0) || 'N/A';
+  const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1) || 'N/A';
+  const aDefects = findAnswer('interface mismatches') || findAnswer('variant') || getA(2) || 'N/A';
+  const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3) || 'N/A';
+  const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4) || 'N/A';
+  const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5) || 'N/A';
+  const aRepos = findAnswer('repos/build') || findAnswer('customer-reported') || getA(6) || 'N/A';
+  const aDeploy = findAnswer('code committed') || findAnswer('roadmap items') || getA(7) || 'N/A';
+  const aTalent = findAnswer('unfilled') || findAnswer('DELAYED entering') || getA(8) || 'N/A';
+  const aRCA = findAnswer('root cause') || findAnswer('in-house capability') || getA(9) || 'N/A';
 
   let html = `<div class="rec-section">
     <h2>What This Means For ${company}</h2>
@@ -1724,6 +1726,7 @@ function startOver() {
   selectedRole = '';
   answers = {};
   painStates = { 1: false, 2: false, 3: false, 4: false, 5: false };
+  painInteracted = { 1: false, 2: false, 3: false, 4: false, 5: false };
   checkStates = {};
   computed = {};
   questionsBuiltForRole = '';
@@ -2073,7 +2076,7 @@ function _generatePDF(btn, origHTML) {
   doc.text(doc.splitTextToSize(industry, 46)[0] || '', ML + 62, infoY + 16);
   doc.text(today, ML + 120, infoY + 16);
 
-  pageFooter(1);
+  pageFooter(doc.getNumberOfPages());
 
 
   // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
@@ -2157,7 +2160,7 @@ function _generatePDF(btn, origHTML) {
     doc.text('Total quantified impact from ' + computed.coiScenarios.length + ' reported scenario(s)', ML + 60, y + 12);
   }
 
-  pageFooter(2);
+  pageFooter(doc.getNumberOfPages());
 
 
   // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
@@ -2269,7 +2272,7 @@ function _generatePDF(btn, origHTML) {
   var coiNoteLines = doc.splitTextToSize(coiNote, contentW);
   doc.text(coiNoteLines, ML, y);
 
-  pageFooter(3);
+  pageFooter(doc.getNumberOfPages());
 
 
   // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
@@ -2322,7 +2325,7 @@ function _generatePDF(btn, origHTML) {
     }
   });
 
-  pageFooter(4);
+  pageFooter(doc.getNumberOfPages());
 
 
   // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
@@ -2420,7 +2423,7 @@ function _generatePDF(btn, origHTML) {
     doc.text('business impact of your current maturity gaps.', ML + 10, y + 29);
   }
 
-  pageFooter(5);
+  pageFooter(doc.getNumberOfPages());
 
 
   // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
@@ -2506,7 +2509,7 @@ function _generatePDF(btn, origHTML) {
   setText(COL_MUTED);
   doc.text('iFusion  |  KiteBoard  |  iDhi  |  iNNTACT  |  SIIX JV  |  Qualcomm Partnership', ML + 6, y + 11);
 
-  pageFooter(6);
+  pageFooter(doc.getNumberOfPages());
 
 
   // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
@@ -2594,7 +2597,7 @@ function _generatePDF(btn, origHTML) {
     doc.text(pLines.slice(0, 3), px + 7, py + 14);
   });
 
-  pageFooter(7);
+  pageFooter(doc.getNumberOfPages());
 
 
   // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
@@ -2696,16 +2699,16 @@ function getRoadmapForPDF() {
   const at = computed.answerTexts || [];
   const getA = (i) => at[i] ? at[i].a : 'N/A';
   // Semantic lookups that work for both CTO and BU tracks:
-  const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0);
-  const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1);
-  const aDefects = findAnswer('interface mismatches') || findAnswer('variant') || getA(2);
-  const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3);
-  const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4);
-  const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5);
-  const aRepos = findAnswer('repos/build') || findAnswer('customer-reported') || getA(6);
-  const aDeploy = findAnswer('code committed') || findAnswer('roadmap items') || getA(7);
-  const aTalent = findAnswer('unfilled') || findAnswer('DELAYED entering') || getA(8);
-  const aRCA = findAnswer('root cause') || findAnswer('in-house capability') || getA(9);
+  const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0) || 'N/A';
+  const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1) || 'N/A';
+  const aDefects = findAnswer('interface mismatches') || findAnswer('variant') || getA(2) || 'N/A';
+  const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3) || 'N/A';
+  const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4) || 'N/A';
+  const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5) || 'N/A';
+  const aRepos = findAnswer('repos/build') || findAnswer('customer-reported') || getA(6) || 'N/A';
+  const aDeploy = findAnswer('code committed') || findAnswer('roadmap items') || getA(7) || 'N/A';
+  const aTalent = findAnswer('unfilled') || findAnswer('DELAYED entering') || getA(8) || 'N/A';
+  const aRCA = findAnswer('root cause') || findAnswer('in-house capability') || getA(9) || 'N/A';
   const company = document.getElementById('f_company').value;
   const teamSize = document.getElementById('f_teamsize').value;
   const revenue = fmtDollar(parseInt(document.getElementById('f_revenue').value));
@@ -2845,6 +2848,7 @@ function autosave() {
     answers: answers,
     checkStates: checkStates,
     painStates: painStates,
+    painInteracted: painInteracted,
     painDropdowns: {},
     currentStep: currentStep,
     questionsBuiltForRole: questionsBuiltForRole
@@ -2885,17 +2889,18 @@ function autoload() {
     // Restore pain states and dropdowns
     if (data.painStates) {
       painStates = data.painStates;
+      if (data.painInteracted) painInteracted = data.painInteracted;
       for (let num = 1; num <= 5; num++) {
+        if (!painInteracted[num]) continue;  // Skip uninteracted scenarios
         const followup = document.getElementById('ps' + num + '-followup');
         const card = followup?.closest('.ps-card');
         if (!card) continue;
         const btns = card.querySelectorAll('.ps-toggle-btn');
         if (painStates[num]) {
           if (followup) followup.classList.add('open');
-          if (btns[0]) btns[0].classList.add('active-yes'); // "Yes" button
-        } else if (data.painStates[num] === false) {
-          // User explicitly clicked No
-          if (btns[1]) btns[1].classList.add('active-no'); // "No" button
+          if (btns[0]) btns[0].classList.add('active-yes');
+        } else {
+          if (btns[1]) btns[1].classList.add('active-no');
         }
       }
     }
