@@ -754,7 +754,7 @@ const CTO_QUESTIONS = [
       { text: '6-7 teams', score: 6 },
       { text: '8+ teams', score: 2 }
     ],
-    primary: 'CT', secondary: 'AC', maxScore: 18
+    primary: 'CT', secondary: 'AC', maxScore: 18, semanticKey: 'team_coordination'
   },
   {
     q: 'In your last 3 launches, how many weeks did the LONGEST launch slip past its original target?',
@@ -765,7 +765,7 @@ const CTO_QUESTIONS = [
       { text: '1-3 months', score: 6 },
       { text: 'Over 3 months', score: 1 }
     ],
-    primary: 'VV', secondary: 'CT', maxScore: 20
+    primary: 'VV', secondary: 'CT', maxScore: 20, semanticKey: 'launch_delay'
   },
   {
     q: 'What % of defects in system/integration testing are caused by interface mismatches between teams?',
@@ -776,7 +776,7 @@ const CTO_QUESTIONS = [
       { text: 'Over 30%', score: 4 },
       { text: "We don't track this", score: 2 }
     ],
-    primary: 'AC', secondary: 'VV', maxScore: 20
+    primary: 'AC', secondary: 'VV', maxScore: 20, semanticKey: 'defect_source'
   },
   {
     q: 'How do you run integration tests requiring BOTH hardware and software?',
@@ -787,7 +787,7 @@ const CTO_QUESTIONS = [
       { text: 'Automated HIL/SIL pipeline', score: 15 },
       { text: 'Digital twin + AI-driven testing', score: 20 }
     ],
-    primary: 'VV', secondary: 'EC', maxScore: 20
+    primary: 'VV', secondary: 'EC', maxScore: 20, semanticKey: 'testing_maturity'
   },
   {
     q: 'How many production security vulnerabilities discovered in your connected products in the past 12 months?',
@@ -798,7 +798,7 @@ const CTO_QUESTIONS = [
       { text: '6+', score: 4 },
       { text: "Don't track", score: 0 }
     ],
-    primary: 'SP', secondary: null, maxScore: 20
+    primary: 'SP', secondary: null, maxScore: 20, semanticKey: 'security_vulns'
   },
   {
     q: 'How do you deliver firmware updates to deployed products?',
@@ -809,7 +809,7 @@ const CTO_QUESTIONS = [
       { text: 'Regular OTA with staged rollout', score: 14 },
       { text: 'Continuous/predictive OTA', score: 20 }
     ],
-    primary: 'LM', secondary: 'EC', maxScore: 20
+    primary: 'LM', secondary: 'EC', maxScore: 20, semanticKey: 'ota_capability'
   },
   {
     q: 'How many separate repos/build systems must a developer touch for a cross-cutting change (e.g., sensor to cloud dashboard)?',
@@ -820,7 +820,7 @@ const CTO_QUESTIONS = [
       { text: '6+', score: 3 },
       { text: 'Nobody knows', score: 0 }
     ],
-    primary: 'AC', secondary: 'CT', maxScore: 20
+    primary: 'AC', secondary: 'CT', maxScore: 20, semanticKey: 'repo_fragmentation'
   },
   {
     q: "How long from 'code committed' to 'deployed and validated on test device' for a firmware change?",
@@ -831,7 +831,7 @@ const CTO_QUESTIONS = [
       { text: '1-7 days', score: 5 },
       { text: 'Over 1 week', score: 1 }
     ],
-    primary: 'VV', secondary: 'LM', maxScore: 18
+    primary: 'VV', secondary: 'LM', maxScore: 18, semanticKey: 'deploy_speed'
   },
   {
     q: 'How many open engineering positions (embedded/IoT/edge/connected) have been unfilled for 90+ days?',
@@ -842,7 +842,7 @@ const CTO_QUESTIONS = [
       { text: '4-10', score: 6 },
       { text: '11+', score: 1 }
     ],
-    primary: 'CT', secondary: null, maxScore: 20
+    primary: 'CT', secondary: null, maxScore: 20, semanticKey: 'talent_gaps'
   },
   {
     q: 'When a product fails in the field, how quickly can you isolate root cause across the full stack (device + edge + cloud)?',
@@ -853,7 +853,7 @@ const CTO_QUESTIONS = [
       { text: '1-3 days', score: 5 },
       { text: 'Over 3 days or cannot isolate', score: 1 }
     ],
-    primary: 'EC', secondary: 'LM', maxScore: 18
+    primary: 'EC', secondary: 'LM', maxScore: 18, semanticKey: 'rca_speed'
   }
 ];
 
@@ -867,7 +867,7 @@ const BU_QUESTIONS = [
       { text: '11-50', score: null, context: 'variant_count' },
       { text: '51+', score: null, context: 'variant_count' }
     ],
-    primary: null, secondary: null, maxScore: 0, contextKey: 'variant_count'
+    primary: null, secondary: null, maxScore: 0, contextKey: 'variant_count', semanticKey: 'variant_count'
   },
   {
     q: 'When adding a new variant, how much engineering effort is required vs. building the first variant?',
@@ -878,7 +878,7 @@ const BU_QUESTIONS = [
       { text: '20-40%', score: 16 },
       { text: 'Under 20% - strong reuse', score: 20 }
     ],
-    primary: 'AC', secondary: null, maxScore: 20
+    primary: 'AC', secondary: null, maxScore: 20, semanticKey: 'variant_effort'
   },
   {
     q: 'Average time from concept approved to first customer shipment for a new variant?',
@@ -889,7 +889,7 @@ const BU_QUESTIONS = [
       { text: '12-18 months', score: 4 },
       { text: 'Over 18 months', score: 1 }
     ],
-    primary: 'CT', secondary: 'VV', maxScore: 18
+    primary: 'CT', secondary: 'VV', maxScore: 18, semanticKey: 'time_to_market'
   },
   {
     q: 'How many launches/major releases were delayed >4 weeks from committed date in the past 12 months?',
@@ -900,7 +900,7 @@ const BU_QUESTIONS = [
       { text: '2-3', score: 6 },
       { text: '4+', score: 1 }
     ],
-    primary: 'VV', secondary: 'CT', maxScore: 20
+    primary: 'VV', secondary: 'CT', maxScore: 20, semanticKey: 'launch_delay'
   },
   {
     q: 'Approximate annual BOM cost across all connected product SKUs?',
@@ -911,7 +911,7 @@ const BU_QUESTIONS = [
       { text: '$25-50M', score: null, context: 'annual_bom' },
       { text: '$50M+', score: null, context: 'annual_bom' }
     ],
-    primary: null, secondary: null, maxScore: 0, contextKey: 'annual_bom'
+    primary: null, secondary: null, maxScore: 0, contextKey: 'annual_bom', semanticKey: 'bom_cost'
   },
   {
     q: 'How often does a competitor launch a similar feature/product before you?',
@@ -922,7 +922,7 @@ const BU_QUESTIONS = [
       { text: 'Sometimes', score: 6 },
       { text: 'Frequently/constantly', score: 1 }
     ],
-    primary: 'CT', secondary: null, maxScore: 20
+    primary: 'CT', secondary: null, maxScore: 20, semanticKey: 'competitive_speed'
   },
   {
     q: 'Customer-reported connected product issues in the past 12 months?',
@@ -933,7 +933,7 @@ const BU_QUESTIONS = [
       { text: '200-1000', score: 4 },
       { text: 'Over 1000', score: 1 }
     ],
-    primary: 'LM', secondary: 'SP', maxScore: 18
+    primary: 'LM', secondary: 'SP', maxScore: 18, semanticKey: 'field_quality'
   },
   {
     q: 'What % of roadmap items for the current fiscal year are you confident will be delivered on time?',
@@ -944,7 +944,7 @@ const BU_QUESTIONS = [
       { text: '50-70%', score: 6 },
       { text: 'Under 50%', score: 1 }
     ],
-    primary: 'CT', secondary: 'VV', maxScore: 20
+    primary: 'CT', secondary: 'VV', maxScore: 20, semanticKey: 'roadmap_confidence'
   },
   {
     q: "How many markets/regions have you DELAYED entering because your product couldn't be adapted fast enough?",
@@ -955,7 +955,7 @@ const BU_QUESTIONS = [
       { text: '2-3', score: 5 },
       { text: '4+', score: 1 }
     ],
-    primary: 'AC', secondary: null, maxScore: 20
+    primary: 'AC', secondary: null, maxScore: 20, semanticKey: 'market_delays'
   },
   {
     q: 'Does your team have in-house capability for ALL of these?',
@@ -963,9 +963,200 @@ const BU_QUESTIONS = [
     opts: [], // checklist handled specially
     checkItems: ['Edge AI/ML', 'Cloud-native backend', 'OTA firmware updates', 'HW-SW co-design', 'Cybersecurity compliance'],
     primary: 'EC', secondary: 'SP', maxScore: 20,
-    isChecklist: true
+    isChecklist: true, semanticKey: 'capability_gaps'
   }
 ];
+
+// ================================================================
+// RECOMMENDATION CONFIG (data-driven, tier-keyed)
+// ================================================================
+const RECOMMENDATIONS = {
+  1: { // Tier 1: Fragmented
+    intro: (ctx) => `${ctx.name}, your organization scored ${ctx.score}/100 (Tier 1: Fragmented). Your connected product engineering has fundamental gaps that must be addressed systematically.`,
+    phases: [
+      {
+        title: 'Phase 1: Architecture Assessment',
+        time: 'Months 1-3',
+        body: (ctx) => `Your team coordination is at "${ctx.a('team_coordination') || ctx.a('variant_count')}" and your testing maturity is "${ctx.a('testing_maturity') || ctx.a('time_to_market')}". This indicates fundamental architecture fragmentation.`,
+        bullets: (ctx) => [
+          `Map all interfaces across your ${ctx.teamSize}-person engineering organization using <span class="innominds-ref">iFusion</span>`,
+          `Create a unified architecture blueprint for your ${ctx.industry} product line`,
+          `Address the top integration pain points identified in your diagnostic`
+        ]
+      },
+      {
+        title: 'Phase 2: CI/CD Foundation',
+        time: 'Months 4-8',
+        body: (ctx) => `Your delivery speed ("${ctx.a('deploy_speed') || ctx.a('roadmap_confidence')}") needs a modern CI/CD pipeline spanning embedded, edge, and cloud.`,
+        bullets: (ctx) => [
+          `Implement <span class="innominds-ref">KiteBoard</span> for unified build orchestration`,
+          `Deploy basic HIL/SIL test infrastructure to catch integration defects early`,
+          `Establish OTA update capability using <span class="innominds-ref">iDhi</span> — currently "${ctx.a('ota_capability') || ctx.a('competitive_speed')}"`
+        ]
+      },
+      {
+        title: 'Phase 3: Shared Platform Layer',
+        time: 'Months 9-12',
+        body: (ctx) => `With ${ctx.fmtRevenue} in projected revenue, platform reuse will be critical to scaling efficiently.`,
+        bullets: (ctx) => [
+          `Extract shared middleware and HAL layers to enable variant reuse`,
+          `Implement security baseline using <span class="innominds-ref">iNNTACT</span> — you reported "${ctx.a('security_vulns') || ctx.a('bom_cost')}" for security/compliance`,
+          `Leverage <span class="innominds-ref">SIIX JV</span> for HW-SW co-design and <span class="innominds-ref">Qualcomm</span> for edge compute`
+        ]
+      }
+    ]
+  },
+  2: { // Tier 2: Reactive
+    intro: (ctx) => `${ctx.name}, your organization scored ${ctx.score}/100 (Tier 2: Reactive). Basic processes exist but integration is reactive. Targeted improvements can yield rapid results.`,
+    phases: [
+      {
+        title: 'Phase 1: Gap Analysis & Quick Wins',
+        time: 'Months 1-2',
+        body: (ctx) => `You answered "${ctx.a('defect_source') || ctx.a('variant_effort')}" for quality/effort issues, and "${ctx.a('launch_delay')}" for delays. These indicate specific gaps for rapid improvement.`,
+        bullets: (ctx) => [
+          `Conduct <span class="innominds-ref">iFusion</span> assessment across your ${ctx.teamSize} engineers to map integration bottlenecks`,
+          `Identify and fix the top 3 interface contracts causing repeated failures`,
+          `Deploy <span class="innominds-ref">KiteBoard</span> dashboards for cross-team visibility`
+        ]
+      },
+      {
+        title: 'Phase 2: V&V Automation',
+        time: 'Months 3-6',
+        body: (ctx) => `Your testing maturity ("${ctx.a('testing_maturity') || ctx.a('time_to_market')}") has significant room for automation.`,
+        bullets: (ctx) => [
+          `Implement automated HIL/SIL test infrastructure for ${ctx.industry} products`,
+          `Target delivery speed improvement from "${ctx.a('deploy_speed') || ctx.a('roadmap_confidence')}" to under 4 hours`,
+          `Deploy <span class="innominds-ref">iNNTACT</span> for continuous security validation in CI/CD`
+        ]
+      },
+      {
+        title: 'Phase 3: Edge-Cloud Hardening',
+        time: 'Months 7-9',
+        body: (ctx) => `With ${ctx.fmtRevenue} in connected product revenue at stake, your edge-cloud architecture needs production hardening.`,
+        bullets: (ctx) => [
+          `Deploy <span class="innominds-ref">iDhi</span> for robust OTA with staged rollout and rollback`,
+          `Implement full-stack observability (current diagnostic speed: "${ctx.a('rca_speed') || ctx.a('field_quality')}")`,
+          `Leverage <span class="innominds-ref">Qualcomm</span> edge AI and <span class="innominds-ref">SIIX JV</span> for manufacturing scale`
+        ]
+      }
+    ]
+  },
+  3: { // Tier 3: Structured
+    intro: (ctx) => `${ctx.name}, your organization scored ${ctx.score}/100 (Tier 3: Structured). Good foundations are in place — the opportunity now is platform leverage to multiply engineering velocity.`,
+    phases: [
+      {
+        title: 'Phase 1: Platform Productization',
+        time: 'Months 1-2',
+        body: (ctx) => `Your architecture ("${ctx.a('repo_fragmentation') || ctx.a('variant_effort')}") and coordination ("${ctx.a('team_coordination') || ctx.a('variant_count')}") suggest platform consolidation will unlock significant velocity.`,
+        bullets: (ctx) => [
+          `Formalize shared platform architecture using <span class="innominds-ref">iFusion</span>`,
+          `Create reusable product-line building blocks for your ${ctx.industry} portfolio`,
+          `Reduce variant effort through <span class="innominds-ref">KiteBoard</span> configuration management`
+        ]
+      },
+      {
+        title: 'Phase 2: AI-Augmented V&V',
+        time: 'Months 3-4',
+        body: (ctx) => `Your testing maturity ("${ctx.a('testing_maturity') || ctx.a('time_to_market')}") is ready for AI-driven optimization.`,
+        bullets: (ctx) => [
+          `Deploy AI-driven test generation to increase coverage while reducing manual effort`,
+          `Implement digital twin validation for pre-production testing`,
+          `Integrate <span class="innominds-ref">iNNTACT</span> for automated security regression testing`
+        ]
+      },
+      {
+        title: 'Phase 3: Predictive Field Intelligence',
+        time: 'Months 5-6',
+        body: (ctx) => `With your ${ctx.teamSize}-person team and ${ctx.fmtRevenue} revenue, moving to predictive operations will differentiate your products.`,
+        bullets: (ctx) => [
+          `Deploy <span class="innominds-ref">iDhi</span> predictive analytics for proactive field maintenance`,
+          `Implement telemetry-driven OTA updates (upgrade from "${ctx.a('ota_capability') || ctx.a('competitive_speed')}")`,
+          `Leverage <span class="innominds-ref">Qualcomm</span> edge AI and <span class="innominds-ref">SIIX JV</span> for intelligent hardware optimization`
+        ]
+      }
+    ]
+  },
+  4: { // Tier 4: Integrated
+    intro: (ctx) => `${ctx.name}, your organization scored ${ctx.score}/100 (Tier 4: Integrated). Strong integration exists — the question is how to extract maximum competitive advantage.`,
+    phases: [
+      {
+        title: 'Track 1: AI/ML Product Intelligence',
+        time: 'Ongoing',
+        body: (ctx) => `Your strong foundation positions you to embed AI/ML directly into product functionality for your ${ctx.industry} line.`,
+        bullets: (ctx) => [
+          `Deploy edge AI inference using <span class="innominds-ref">Qualcomm</span> platforms for real-time product intelligence`,
+          `Implement ML-driven anomaly detection in field telemetry via <span class="innominds-ref">iDhi</span>`,
+          `Create AI-augmented development workflows for your ${ctx.teamSize} engineers`
+        ]
+      },
+      {
+        title: 'Track 2: Digital Twin Operations',
+        time: 'Ongoing',
+        body: (ctx) => `Your testing maturity ("${ctx.a('testing_maturity') || ctx.a('time_to_market')}") is ready for comprehensive digital twin simulation.`,
+        bullets: (ctx) => [
+          `Build full-fidelity digital twins for pre-production validation via <span class="innominds-ref">iFusion</span>`,
+          `Enable continuous virtual integration testing across your organization`,
+          `Reduce physical prototype dependency by 60%+`
+        ]
+      },
+      {
+        title: 'Track 3: Zero-Trust Security',
+        time: 'Ongoing',
+        body: (ctx) => `Your Security Posture dimension scored ${ctx.dims.SP}/100. Advancing to zero-trust protects your ${ctx.fmtRevenue} revenue line.`,
+        bullets: (ctx) => [
+          `Implement zero-trust device identity and attestation using <span class="innominds-ref">iNNTACT</span>`,
+          `Deploy runtime security monitoring across edge and cloud`,
+          `Achieve continuous compliance automation for ${ctx.industry} regulations`
+        ]
+      },
+      {
+        title: 'Track 4: Autonomous OTA',
+        time: 'Ongoing',
+        body: (ctx) => `Your current OTA capability ("${ctx.a('ota_capability') || ctx.a('competitive_speed')}") can evolve to fully autonomous, telemetry-driven deployments.`,
+        bullets: (ctx) => [
+          `Implement predictive OTA triggered by device health telemetry via <span class="innominds-ref">iDhi</span>`,
+          `Deploy canary releases with automatic rollback based on field metrics`,
+          `Enable self-healing firmware with <span class="innominds-ref">SIIX JV</span> hardware-level recovery`
+        ]
+      }
+    ]
+  },
+  5: { // Tier 5: Autonomous
+    intro: (ctx) => `${ctx.name}, at score ${ctx.score}/100 your organization is at the frontier of connected product engineering. The focus now is sustaining your edge and scaling innovation.`,
+    phases: [
+      {
+        title: 'Innovation Lab Partnership',
+        time: 'Ongoing',
+        body: (ctx) => `${ctx.company} is operating at industry-leading maturity. Innominds can accelerate your innovation agenda.`,
+        bullets: (ctx) => [
+          `Joint innovation lab for next-gen ${ctx.industry} capabilities`,
+          `Early access to <span class="innominds-ref">Qualcomm</span> silicon roadmap for edge AI advancement`,
+          `Co-develop industry-first features using <span class="innominds-ref">iFusion</span> and <span class="innominds-ref">iDhi</span> platforms`
+        ]
+      },
+      {
+        title: 'Global Scale via SIIX JV',
+        time: 'Ongoing',
+        body: (ctx) => `Your ${ctx.teamSize}-person team can scale globally through Innominds' manufacturing and engineering partnerships.`,
+        bullets: (ctx) => [
+          `Leverage <span class="innominds-ref">SIIX JV</span> for global manufacturing optimization`,
+          `Deploy regional engineering centers for follow-the-sun development`,
+          `Scale connected product operations across markets efficiently`
+        ]
+      },
+      {
+        title: 'Dedicated Engineering Center',
+        time: 'Ongoing',
+        body: (ctx) => `With ${ctx.fmtRevenue} at stake, a dedicated engineering center provides sustained capacity for innovation.`,
+        bullets: (ctx) => [
+          `Innominds Dedicated Center with 1,500+ engineers for sustained product development`,
+          `Full-stack capability: embedded, edge AI, cloud, security, OTA`,
+          `25 years of connected product engineering expertise applied to your roadmap`
+        ]
+      }
+    ]
+  }
+};
 
 // ================================================================
 // ROLE SELECTION
@@ -1278,6 +1469,9 @@ function calculateResults() {
   const qs = selectedRole === 'cto' ? CTO_QUESTIONS : BU_QUESTIONS;
   const dims = { AC: { score: 0, max: 0 }, VV: { score: 0, max: 0 }, CT: { score: 0, max: 0 }, EC: { score: 0, max: 0 }, SP: { score: 0, max: 0 }, LM: { score: 0, max: 0 } };
 
+  // Semantic answer store - maps meaning to answer, works for both tracks
+  computed.answers = {};
+
   // Store answer texts for recommendations
   computed.answerTexts = [];
 
@@ -1293,6 +1487,7 @@ function calculateResults() {
       // Context question, no score
       ansText = q.opts[answers[i]] ? q.opts[answers[i]].text : '';
       computed[q.contextKey] = ansText;
+      if (q.semanticKey) computed.answers[q.semanticKey] = ansText;
       computed.answerTexts.push({ q: q.q, a: ansText, score: null, dims: 'Context' });
       return;
     } else {
@@ -1300,6 +1495,8 @@ function calculateResults() {
       score = opt ? opt.score : 0;
       ansText = opt ? opt.text : '';
     }
+
+    if (q.semanticKey) computed.answers[q.semanticKey] = ansText;
 
     if (q.primary) {
       dims[q.primary].score += score;
@@ -1504,216 +1701,34 @@ function renderResults() {
   }, 100);
 }
 
-// Role-aware answer lookup by keyword in question text
-function findAnswer(keyword) {
-  const at = computed.answerTexts || [];
-  for (let i = 0; i < at.length; i++) {
-    if (at[i].q && at[i].q.toLowerCase().includes(keyword.toLowerCase())) return at[i].a;
-  }
-  return '';  // Return falsy so || fallback chains work
-}
-
 function buildRecommendation() {
-  const name = document.getElementById('f_name').value.split(' ')[0];
-  const company = document.getElementById('f_company').value;
-  const teamSize = parseInt(document.getElementById('f_teamsize').value);
-  const revenue = parseInt(document.getElementById('f_revenue').value);
+  const ctx = {
+    name: document.getElementById('f_name').value.split(' ')[0],
+    company: document.getElementById('f_company').value,
+    teamSize: parseInt(document.getElementById('f_teamsize').value),
+    revenue: parseInt(document.getElementById('f_revenue').value),
+    fmtRevenue: fmtDollar(parseInt(document.getElementById('f_revenue').value)),
+    industry: document.getElementById('f_industry').value,
+    score: computed.overall,
+    dims: computed.dims,
+    a: (key) => computed.answers[key] || ''
+  };
 
-  // Role-aware answer references (search by keyword, not hardcoded index)
-  const at = computed.answerTexts || [];
-  const getA = (i) => at[i] ? at[i].a : '';
-  // Semantic lookups that work for both CTO and BU tracks:
-  const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0) || 'N/A';
-  const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1) || 'N/A';
-  const aDefects = findAnswer('interface mismatches') || findAnswer('adding a new variant') || getA(2) || 'N/A';
-  const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3) || 'N/A';
-  const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4) || 'N/A';
-  const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5) || 'N/A';
-  const aRepos = findAnswer('repos/build') || findAnswer('customer-reported') || getA(6) || 'N/A';
-  const aDeploy = findAnswer('code committed') || findAnswer('roadmap items') || getA(7) || 'N/A';
-  const aTalent = findAnswer('unfilled') || findAnswer('DELAYED entering') || getA(8) || 'N/A';
-  const aRCA = findAnswer('root cause') || findAnswer('in-house capability') || getA(9) || 'N/A';
+  const tierConfig = RECOMMENDATIONS[computed.tier];
+  if (!tierConfig) return '<div class="rec-section"><h2>Recommendation not available</h2></div>';
 
   let html = `<div class="rec-section">
-    <h2>What This Means For ${company}</h2>
-    <p style="color:#718096;margin-bottom:24px;line-height:1.7;">
-      ${name}, based on your diagnostic responses, your organization scored <strong>${computed.overall}/100</strong>
-      (Tier ${computed.tier}: ${computed.tierName}). Here is a personalized roadmap tailored to your situation.
-    </p>`;
+    <h2>What This Means For ${ctx.company}</h2>
+    <p style="color:#718096;margin-bottom:24px;line-height:1.7;">${tierConfig.intro(ctx)}</p>`;
 
-  if (computed.tier === 1) {
-    html += `
-    <div class="phase-card">
-      <h3>Phase 1: Architecture Assessment</h3>
-      <div class="phase-time">Months 1-3</div>
-      <p>You reported ${aTeams} for cross-team coordination, and your testing maturity is "${aTesting}".
-      This indicates fundamental architecture fragmentation that must be addressed before automation can help.</p>
-      <ul>
-        <li>Map all interfaces between your ${teamSize}-person engineering organization using <span class="innominds-ref">Innominds iFusion</span></li>
-        <li>Create a unified architecture blueprint for your ${document.getElementById('f_industry').value} product line</li>
-        <li>Identify the top 5 interface contracts causing integration failures</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Phase 2: CI/CD Foundation</h3>
-      <div class="phase-time">Months 4-8</div>
-      <p>Your current delivery speed ("${aDeploy}") needs a modern CI/CD pipeline that spans embedded, edge, and cloud.</p>
-      <ul>
-        <li>Implement <span class="innominds-ref">KiteBoard</span> for unified build orchestration across repos</li>
-        <li>Deploy basic HIL/SIL test infrastructure to catch integration defects early</li>
-        <li>Establish OTA update capability using <span class="innominds-ref">iDhi</span> platform</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Phase 3: Shared Platform Layer</h3>
-      <div class="phase-time">Months 9-12</div>
-      <p>With ${fmtDollar(revenue)} in projected revenue, platform reuse will be critical to scaling efficiently.</p>
-      <ul>
-        <li>Extract shared middleware and HAL layers to enable variant reuse</li>
-        <li>Implement security baseline using <span class="innominds-ref">iNNTACT</span> for connected product hardening</li>
-        <li>Leverage <span class="innominds-ref">SIIX JV</span> for HW-SW co-design optimization and <span class="innominds-ref">Qualcomm</span> partnership for edge compute</li>
-      </ul>
+  tierConfig.phases.forEach(phase => {
+    html += `<div class="phase-card">
+      <h3>${phase.title}</h3>
+      <div class="phase-time">${phase.time}</div>
+      <p>${phase.body(ctx)}</p>
+      <ul>${phase.bullets(ctx).map(b => `<li>${b}</li>`).join('')}</ul>
     </div>`;
-  } else if (computed.tier === 2) {
-    html += `
-    <div class="phase-card">
-      <h3>Phase 1: Gap Analysis & Quick Wins</h3>
-      <div class="phase-time">Months 1-2</div>
-      <p>You answered "${aDefects}" regarding interface defects, and "${aDelay}" for launch delays. These indicate specific gaps we can target for rapid improvement.</p>
-      <ul>
-        <li>Conduct an <span class="innominds-ref">Innominds iFusion</span> assessment to map integration bottlenecks across your ${teamSize} engineers</li>
-        <li>Identify and fix the top 3 interface contracts causing repeated integration failures</li>
-        <li>Deploy <span class="innominds-ref">KiteBoard</span> dashboards for cross-team visibility</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Phase 2: V&V Automation</h3>
-      <div class="phase-time">Months 3-6</div>
-      <p>Your testing maturity ("${aTesting}") has room for significant automation. Moving to HIL/SIL will dramatically reduce your integration cycle.</p>
-      <ul>
-        <li>Implement automated HIL/SIL test infrastructure for your ${document.getElementById('f_industry').value} products</li>
-        <li>Reduce commit-to-validated cycle from "${aDeploy}" to under 4 hours</li>
-        <li>Deploy <span class="innominds-ref">iNNTACT</span> for continuous security validation in CI/CD pipeline</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Phase 3: Edge-Cloud Hardening</h3>
-      <div class="phase-time">Months 7-9</div>
-      <p>With ${fmtDollar(revenue)} in connected product revenue at stake, your edge-cloud architecture needs to be production-hardened.</p>
-      <ul>
-        <li>Deploy <span class="innominds-ref">iDhi</span> for robust OTA with staged rollout and rollback</li>
-        <li>Implement full-stack observability for field diagnostics (your current RCA time: "${aRCA}")</li>
-        <li>Leverage <span class="innominds-ref">Qualcomm</span> edge AI capabilities and <span class="innominds-ref">SIIX JV</span> for manufacturing scale</li>
-      </ul>
-    </div>`;
-  } else if (computed.tier === 3) {
-    html += `
-    <div class="phase-card">
-      <h3>Phase 1: Platform Productization</h3>
-      <div class="phase-time">Months 1-2</div>
-      <p>Your organization has good foundations. Your answer "${aRepos}" for repo fragmentation and "${aTeams}" for team coordination suggest platform consolidation will unlock significant velocity.</p>
-      <ul>
-        <li>Use <span class="innominds-ref">iFusion</span> to formalize your shared platform architecture</li>
-        <li>Create reusable product-line building blocks for your ${document.getElementById('f_industry').value} portfolio</li>
-        <li>Reduce variant effort through <span class="innominds-ref">KiteBoard</span> configuration management</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Phase 2: AI-Augmented V&V</h3>
-      <div class="phase-time">Months 3-4</div>
-      <p>You're at "${aTesting}" for testing maturity. The next step is AI-driven test generation and digital twin simulation.</p>
-      <ul>
-        <li>Deploy AI-driven test generation to increase coverage while reducing manual effort</li>
-        <li>Implement digital twin validation for pre-silicon and pre-production testing</li>
-        <li>Integrate <span class="innominds-ref">iNNTACT</span> for automated security regression testing</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Phase 3: Predictive Field Intelligence</h3>
-      <div class="phase-time">Months 5-6</div>
-      <p>With your ${teamSize}-person team and ${fmtDollar(revenue)} revenue, moving to predictive operations will differentiate your products.</p>
-      <ul>
-        <li>Deploy <span class="innominds-ref">iDhi</span> predictive analytics for proactive field maintenance</li>
-        <li>Implement telemetry-driven OTA updates (upgrade from "${aOTA}")</li>
-        <li>Leverage <span class="innominds-ref">Qualcomm</span> edge AI and <span class="innominds-ref">SIIX JV</span> for intelligent hardware optimization</li>
-      </ul>
-    </div>`;
-  } else if (computed.tier === 4) {
-    html += `
-    <div class="phase-card">
-      <h3>Track 1: AI/ML Product Intelligence</h3>
-      <div class="phase-time">Ongoing</div>
-      <p>Your strong foundation (score: ${computed.overall}) positions you to embed AI/ML directly into product functionality for your ${document.getElementById('f_industry').value} line.</p>
-      <ul>
-        <li>Deploy edge AI inference using <span class="innominds-ref">Qualcomm</span> platforms for real-time product intelligence</li>
-        <li>Implement ML-driven anomaly detection in field telemetry via <span class="innominds-ref">iDhi</span></li>
-        <li>Create AI-augmented development workflows for your ${teamSize} engineers</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Track 2: Digital Twin Operations</h3>
-      <div class="phase-time">Ongoing</div>
-      <p>Based on your testing maturity ("${aTesting}"), you're ready for comprehensive digital twin simulation.</p>
-      <ul>
-        <li>Build full-fidelity digital twins for pre-production validation via <span class="innominds-ref">iFusion</span></li>
-        <li>Enable continuous virtual integration testing across all ${aTeams} coordinating teams</li>
-        <li>Reduce physical prototype dependency by 60%+</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Track 3: Zero-Trust Security</h3>
-      <div class="phase-time">Ongoing</div>
-      <p>Your security posture scored ${computed.dims.SP}/100. Advancing to zero-trust architecture will protect your ${fmtDollar(revenue)} revenue line.</p>
-      <ul>
-        <li>Implement zero-trust device identity and attestation using <span class="innominds-ref">iNNTACT</span></li>
-        <li>Deploy runtime security monitoring across edge and cloud</li>
-        <li>Achieve continuous compliance automation for regulatory requirements</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Track 4: Autonomous OTA</h3>
-      <div class="phase-time">Ongoing</div>
-      <p>Your current OTA capability ("${aOTA}") can evolve to fully autonomous, telemetry-driven deployments.</p>
-      <ul>
-        <li>Implement predictive OTA triggered by device health telemetry via <span class="innominds-ref">iDhi</span></li>
-        <li>Deploy canary releases with automatic rollback based on field metrics</li>
-        <li>Enable self-healing firmware with <span class="innominds-ref">SIIX JV</span> hardware-level recovery</li>
-      </ul>
-    </div>`;
-  } else {
-    // Tier 5
-    html += `
-    <div class="phase-card">
-      <h3>Innovation Lab Partnership</h3>
-      <div class="phase-time">Ongoing</div>
-      <p>At score ${computed.overall}, ${company} is operating at the frontier of connected product engineering. Innominds can accelerate your innovation agenda.</p>
-      <ul>
-        <li>Joint innovation lab for next-gen ${document.getElementById('f_industry').value} capabilities</li>
-        <li>Early access to <span class="innominds-ref">Qualcomm</span> silicon roadmap for edge AI advancement</li>
-        <li>Co-develop industry-first features using <span class="innominds-ref">iFusion</span> and <span class="innominds-ref">iDhi</span> platforms</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Global Scale via SIIX JV</h3>
-      <div class="phase-time">Ongoing</div>
-      <p>Your ${teamSize}-person team can scale globally through Innominds' manufacturing and engineering partnerships.</p>
-      <ul>
-        <li>Leverage <span class="innominds-ref">SIIX JV</span> for global manufacturing optimization</li>
-        <li>Deploy regional engineering centers for follow-the-sun development</li>
-        <li>Scale connected product operations across markets efficiently</li>
-      </ul>
-    </div>
-    <div class="phase-card">
-      <h3>Dedicated Engineering Center</h3>
-      <div class="phase-time">Ongoing</div>
-      <p>With ${fmtDollar(revenue)} at stake, a dedicated engineering center provides sustained capacity for innovation.</p>
-      <ul>
-        <li>Innominds Dedicated Center with 1500+ engineers for sustained product development</li>
-        <li>Full-stack capability: embedded, edge AI, cloud, security, OTA</li>
-        <li>25 years of connected product engineering expertise applied to your roadmap</li>
-      </ul>
-    </div>`;
-  }
+  });
 
   html += `</div>`;
   return html;
@@ -2697,136 +2712,25 @@ function _generatePDF(btn, origHTML) {
 }
 
 function getRoadmapForPDF() {
-  const at = computed.answerTexts || [];
-  const getA = (i) => at[i] ? at[i].a : 'N/A';
-  // Semantic lookups that work for both CTO and BU tracks:
-  const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0) || 'N/A';
-  const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1) || 'N/A';
-  const aDefects = findAnswer('interface mismatches') || findAnswer('adding a new variant') || getA(2) || 'N/A';
-  const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3) || 'N/A';
-  const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4) || 'N/A';
-  const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5) || 'N/A';
-  const aRepos = findAnswer('repos/build') || findAnswer('customer-reported') || getA(6) || 'N/A';
-  const aDeploy = findAnswer('code committed') || findAnswer('roadmap items') || getA(7) || 'N/A';
-  const aTalent = findAnswer('unfilled') || findAnswer('DELAYED entering') || getA(8) || 'N/A';
-  const aRCA = findAnswer('root cause') || findAnswer('in-house capability') || getA(9) || 'N/A';
-  const company = document.getElementById('f_company').value;
-  const teamSize = document.getElementById('f_teamsize').value;
-  const revenue = fmtDollar(parseInt(document.getElementById('f_revenue').value));
-  const industry = document.getElementById('f_industry').value;
+  const ctx = {
+    name: document.getElementById('f_name').value,
+    company: document.getElementById('f_company').value,
+    teamSize: document.getElementById('f_teamsize').value,
+    revenue: fmtDollar(parseInt(document.getElementById('f_revenue').value)),
+    industry: document.getElementById('f_industry').value,
+    score: computed.overall,
+    dims: computed.dims,
+    a: (key) => computed.answers[key] || ''
+  };
 
-  if (computed.tier === 1) {
-    return [
-      { title: 'Phase 1: Architecture Assessment', timeline: 'Months 1-3',
-        items: [
-          'Map all interfaces across your ' + teamSize + '-person engineering organization (iFusion)',
-          'Create unified architecture blueprint for ' + industry + ' product line',
-          'You reported "' + aTeams + '" for team coordination - address interface fragmentation first'
-        ]},
-      { title: 'Phase 2: CI/CD Foundation', timeline: 'Months 4-8',
-        items: [
-          'Your delivery speed ("' + aDeploy + '") needs modern CI/CD spanning embedded to cloud (KiteBoard)',
-          'Deploy basic HIL/SIL test infrastructure',
-          'Establish OTA update capability (iDhi) - currently "' + aOTA + '"'
-        ]},
-      { title: 'Phase 3: Shared Platform Layer', timeline: 'Months 9-12',
-        items: [
-          'Extract shared middleware and HAL layers for variant reuse',
-          'Implement security baseline (iNNTACT) - you reported "' + aSecurity + '" for security vulnerabilities',
-          'Leverage SIIX JV for HW-SW co-design optimization'
-        ]}
-    ];
-  } else if (computed.tier === 2) {
-    return [
-      { title: 'Phase 1: Gap Analysis & Quick Wins', timeline: 'Months 1-2',
-        items: [
-          'Interface defects at "' + aDefects + '" - identify top 3 interface contracts to fix (iFusion)',
-          'Launch delays of "' + aDelay + '" - deploy KiteBoard for cross-team visibility',
-          'Quick wins across ' + teamSize + ' engineers for immediate velocity improvement'
-        ]},
-      { title: 'Phase 2: V&V Automation', timeline: 'Months 3-6',
-        items: [
-          'Testing maturity: "' + aTesting + '" - implement automated HIL/SIL for ' + industry,
-          'Reduce commit-to-validated cycle from "' + aDeploy + '" to under 4 hours',
-          'Deploy iNNTACT for continuous security validation in CI/CD'
-        ]},
-      { title: 'Phase 3: Edge-Cloud Hardening', timeline: 'Months 7-9',
-        items: [
-          revenue + ' in revenue requires production-hardened edge-cloud architecture',
-          'Deploy iDhi for robust OTA - upgrade from "' + aOTA + '"',
-          'Full-stack observability for field diagnostics (RCA currently: "' + aRCA + '")'
-        ]}
-    ];
-  } else if (computed.tier === 3) {
-    return [
-      { title: 'Phase 1: Platform Productization', timeline: 'Months 1-2',
-        items: [
-          'Repo fragmentation "' + aRepos + '" and team coordination "' + aTeams + '" - consolidate platform (iFusion)',
-          'Create reusable building blocks for ' + industry + ' portfolio',
-          'Reduce variant effort through KiteBoard configuration management'
-        ]},
-      { title: 'Phase 2: AI-Augmented V&V', timeline: 'Months 3-4',
-        items: [
-          'Testing maturity: "' + aTesting + '" - add AI-driven test generation',
-          'Implement digital twin validation for pre-production testing',
-          'Integrate iNNTACT for automated security regression'
-        ]},
-      { title: 'Phase 3: Predictive Field Intelligence', timeline: 'Months 5-6',
-        items: [
-          teamSize + '-person team with ' + revenue + ' revenue - move to predictive operations (iDhi)',
-          'Telemetry-driven OTA updates - upgrade from "' + aOTA + '"',
-          'Leverage Qualcomm edge AI and SIIX JV for intelligent HW optimization'
-        ]}
-    ];
-  } else if (computed.tier === 4) {
-    return [
-      { title: 'Track 1: AI/ML Product Intelligence', timeline: 'Ongoing',
-        items: [
-          'Edge AI inference with Qualcomm for ' + industry + ' intelligence',
-          'ML-driven anomaly detection via iDhi',
-          'AI-augmented development workflows for ' + teamSize + ' engineers'
-        ]},
-      { title: 'Track 2: Digital Twin Operations', timeline: 'Ongoing',
-        items: [
-          'Full-fidelity digital twins via iFusion (testing maturity: "' + aTesting + '")',
-          'Continuous virtual integration across ' + aTeams + ' teams',
-          'Reduce physical prototype dependency by 60%+'
-        ]},
-      { title: 'Track 3: Zero-Trust Security', timeline: 'Ongoing',
-        items: [
-          'Security posture at ' + computed.dims.SP + '/100 - advance to zero-trust (iNNTACT)',
-          'Runtime security monitoring across edge and cloud',
-          'Continuous compliance automation for ' + industry + ' regulations'
-        ]},
-      { title: 'Track 4: Autonomous OTA', timeline: 'Ongoing',
-        items: [
-          'Current OTA: "' + aOTA + '" - evolve to predictive deployment (iDhi)',
-          'Canary releases with automatic rollback from field metrics',
-          'Self-healing firmware with SIIX JV hardware-level recovery'
-        ]}
-    ];
-  } else {
-    return [
-      { title: 'Innovation Lab Partnership', timeline: 'Ongoing',
-        items: [
-          'Joint innovation lab for next-gen ' + industry + ' capabilities',
-          'Early access to Qualcomm silicon roadmap for edge AI',
-          'Co-develop industry-first features using iFusion and iDhi'
-        ]},
-      { title: 'Global Scale via SIIX JV', timeline: 'Ongoing',
-        items: [
-          teamSize + '-person team can scale globally through SIIX JV manufacturing',
-          'Regional engineering centers for follow-the-sun development',
-          'Scale connected product operations across markets'
-        ]},
-      { title: 'Dedicated Engineering Center', timeline: 'Ongoing',
-        items: [
-          revenue + ' at stake - dedicated center provides sustained capacity',
-          'Innominds 1500+ engineers for full-stack product development',
-          '25 years of connected product expertise applied to your roadmap'
-        ]}
-    ];
-  }
+  const tierConfig = RECOMMENDATIONS[computed.tier];
+  if (!tierConfig) return [];
+
+  return tierConfig.phases.map(phase => ({
+    title: phase.title,
+    timeline: phase.time,
+    items: phase.bullets(ctx).map(b => b.replace(/<[^>]*>/g, '')) // Strip HTML tags for PDF
+  }));
 }
 
 // ================================================================
