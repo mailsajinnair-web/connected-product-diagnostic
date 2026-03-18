@@ -1142,9 +1142,10 @@ function buildQuestions() {
     restoreQuestionSelections();
     return;
   }
-  // Save any restored answers before re-rendering
-  const savedAnswers = Object.keys(answers).length > 0 ? {...answers} : null;
-  const savedCheckStates = Object.keys(checkStates).length > 0 ? JSON.parse(JSON.stringify(checkStates)) : null;
+  // Save answers only if role hasn't changed (e.g., page reload rebuild)
+  const roleChanged = questionsBuiltForRole !== '' && questionsBuiltForRole !== selectedRole;
+  const savedAnswers = (!roleChanged && Object.keys(answers).length > 0) ? {...answers} : null;
+  const savedCheckStates = (!roleChanged && Object.keys(checkStates).length > 0) ? JSON.parse(JSON.stringify(checkStates)) : null;
   questionsBuiltForRole = selectedRole;
   answers = {};
   const qs = selectedRole === 'cto' ? CTO_QUESTIONS : BU_QUESTIONS;
@@ -1524,7 +1525,7 @@ function buildRecommendation() {
   // Semantic lookups that work for both CTO and BU tracks:
   const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0) || 'N/A';
   const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1) || 'N/A';
-  const aDefects = findAnswer('interface mismatches') || findAnswer('variant') || getA(2) || 'N/A';
+  const aDefects = findAnswer('interface mismatches') || findAnswer('adding a new variant') || getA(2) || 'N/A';
   const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3) || 'N/A';
   const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4) || 'N/A';
   const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5) || 'N/A';
@@ -2701,7 +2702,7 @@ function getRoadmapForPDF() {
   // Semantic lookups that work for both CTO and BU tracks:
   const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0) || 'N/A';
   const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1) || 'N/A';
-  const aDefects = findAnswer('interface mismatches') || findAnswer('variant') || getA(2) || 'N/A';
+  const aDefects = findAnswer('interface mismatches') || findAnswer('adding a new variant') || getA(2) || 'N/A';
   const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3) || 'N/A';
   const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4) || 'N/A';
   const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5) || 'N/A';
