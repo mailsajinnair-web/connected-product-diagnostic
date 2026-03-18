@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -426,7 +426,7 @@
 <!-- STEP 1: PROFILE + ROLE -->
 <!-- =========================================================== -->
 <div class="section active" id="step1">
-  <!-- HERO — Problem-first messaging -->
+  <!-- HERO â€” Problem-first messaging -->
   <div class="hero-card" style="padding:56px 48px;margin-bottom:0;border-radius:16px 16px 0 0;">
     <div class="hero-tag">Innominds Connected Product Diagnostic</div>
     <h1 style="font-size:38px;line-height:1.2;margin-bottom:16px;">Your Connected Product Has<br>an Integration Maturity Gap</h1>
@@ -721,6 +721,7 @@
 <div class="section" id="step4">
   <div id="results-content"></div>
   <div class="results-footer">
+    <button class="btn-back" onclick="goToStep(3)" style="margin-right:auto;">&larr; Back to Pain Scenarios</button>
     <button class="btn-orange" onclick="downloadPDF()">Download PDF Report</button>
     <button class="btn-outline" onclick="startOver()">Start Over</button>
   </div>
@@ -915,7 +916,7 @@ const BU_QUESTIONS = [
     q: 'How often does a competitor launch a similar feature/product before you?',
     why: 'Competitive timing reveals whether your engineering velocity matches your market requirements.',
     opts: [
-      { text: 'Never — we lead', score: 20 },
+      { text: 'Never â€” we lead', score: 20 },
       { text: 'Rarely', score: 13 },
       { text: 'Sometimes', score: 6 },
       { text: 'Frequently/constantly', score: 1 }
@@ -1002,7 +1003,7 @@ function goToStep(step) {
       }
     }
   }
-  // Going backward to step 2 — rebuild questions if needed
+  // Going backward to step 2 â€” rebuild questions if needed
   if (step === 2 && currentStep > 2 && !document.getElementById('questions-container').innerHTML) {
     buildQuestions();
   }
@@ -1035,7 +1036,7 @@ function progClick(targetStep) {
   if (targetStep === currentStep + 1) {
     goToStep(targetStep);
   }
-  // Jumping 2+ steps forward is blocked — must go sequentially
+  // Jumping 2+ steps forward is blocked â€” must go sequentially
 }
 
 // ================================================================
@@ -1133,13 +1134,16 @@ function validateStep3() {
 // ================================================================
 let questionsBuiltForRole = '';
 function buildQuestions() {
-  // Only rebuild if role changed — preserve answers when navigating back
+  // Only rebuild if role changed â€” preserve answers when navigating back
   if (questionsBuiltForRole === selectedRole && Object.keys(answers).length > 0
       && document.getElementById('questions-container').innerHTML.trim() !== '') {
-    // DOM already has questions — just restore visual selections
+    // DOM already has questions â€” just restore visual selections
     restoreQuestionSelections();
     return;
   }
+  // Save any restored answers before re-rendering
+  const savedAnswers = Object.keys(answers).length > 0 ? {...answers} : null;
+  const savedCheckStates = Object.keys(checkStates).length > 0 ? JSON.parse(JSON.stringify(checkStates)) : null;
   questionsBuiltForRole = selectedRole;
   answers = {};
   const qs = selectedRole === 'cto' ? CTO_QUESTIONS : BU_QUESTIONS;
@@ -1192,6 +1196,13 @@ function buildQuestions() {
     html += `</div>`;
   });
   container.innerHTML = html;
+
+  // Restore answers if they existed before re-render
+  if (savedAnswers) {
+    answers = savedAnswers;
+    if (savedCheckStates) checkStates = savedCheckStates;
+    restoreQuestionSelections();
+  }
 }
 
 function restoreQuestionSelections() {
@@ -1329,7 +1340,7 @@ function calculateCOI() {
   computed.coiScenarios = [];
   let total = 0;
 
-  // PS1: Integration Black Hole — Deferred Revenue = (Y1_revenue / 52) * weeks_delayed
+  // PS1: Integration Black Hole â€” Deferred Revenue = (Y1_revenue / 52) * weeks_delayed
   if (painStates[1]) {
     const weeks = parseFloat(val('ps1_weeks')) || 0;
     const rev = parseFloat(val('ps1_revenue')) || 0;
@@ -1346,7 +1357,7 @@ function calculateCOI() {
     total += amount;
   }
 
-  // PS2: Variant Tax — Variant_Overspend = variants * cost_per_variant * 0.5
+  // PS2: Variant Tax â€” Variant_Overspend = variants * cost_per_variant * 0.5
   if (painStates[2]) {
     const variants = parseFloat(val('ps2_variants')) || 0;
     const costPer = parseFloat(val('ps2_cost')) || 0;
@@ -1363,7 +1374,7 @@ function calculateCOI() {
     total += savings;
   }
 
-  // PS3: Field Quality Drain — Field_Quality_Cost = incidents * cost_per_incident
+  // PS3: Field Quality Drain â€” Field_Quality_Cost = incidents * cost_per_incident
   if (painStates[3]) {
     const incidents = parseFloat(val('ps3_incidents')) || 0;
     const costPer = parseFloat(val('ps3_costper')) || 0;
@@ -1379,7 +1390,7 @@ function calculateCOI() {
     total += amount;
   }
 
-  // PS4: Security Wake-Up Call — Security_Cost = response_cost (that's it)
+  // PS4: Security Wake-Up Call â€” Security_Cost = response_cost (that's it)
   if (painStates[4]) {
     const cost = parseFloat(val('ps4_cost')) || 0;
     const sevLabel = document.querySelector('#ps4_severity option:checked')?.textContent || '';
@@ -1393,7 +1404,7 @@ function calculateCOI() {
     total += cost;
   }
 
-  // PS5: Talent Bottleneck — Talent_Cost = revenue_lost_or_delayed (that's it)
+  // PS5: Talent Bottleneck â€” Talent_Cost = revenue_lost_or_delayed (that's it)
   if (painStates[5]) {
     const months = parseFloat(val('ps5_months')) || 0;
     const revImpact = parseFloat(val('ps5_revenue')) || 0;
@@ -1490,15 +1501,35 @@ function renderResults() {
   }, 100);
 }
 
+// Role-aware answer lookup by keyword in question text
+function findAnswer(keyword) {
+  const at = computed.answerTexts || [];
+  for (let i = 0; i < at.length; i++) {
+    if (at[i].q && at[i].q.toLowerCase().includes(keyword.toLowerCase())) return at[i].a;
+  }
+  return 'N/A';
+}
+
 function buildRecommendation() {
   const name = document.getElementById('f_name').value.split(' ')[0];
   const company = document.getElementById('f_company').value;
   const teamSize = parseInt(document.getElementById('f_teamsize').value);
   const revenue = parseInt(document.getElementById('f_revenue').value);
 
-  // Get some answer references for personalization
+  // Role-aware answer references (search by keyword, not hardcoded index)
   const at = computed.answerTexts || [];
   const getA = (i) => at[i] ? at[i].a : '';
+  // Semantic lookups that work for both CTO and BU tracks:
+  const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0);
+  const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1);
+  const aDefects = findAnswer('interface mismatches') || findAnswer('variant') || getA(2);
+  const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3);
+  const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4);
+  const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5);
+  const aRepos = findAnswer('repos/build') || findAnswer('customer-reported') || getA(6);
+  const aDeploy = findAnswer('code committed') || findAnswer('roadmap items') || getA(7);
+  const aTalent = findAnswer('unfilled') || findAnswer('DELAYED entering') || getA(8);
+  const aRCA = findAnswer('root cause') || findAnswer('in-house capability') || getA(9);
 
   let html = `<div class="rec-section">
     <h2>What This Means For ${company}</h2>
@@ -1512,7 +1543,7 @@ function buildRecommendation() {
     <div class="phase-card">
       <h3>Phase 1: Architecture Assessment</h3>
       <div class="phase-time">Months 1-3</div>
-      <p>You reported ${getA(0)} for cross-team coordination, and your integration testing approach is "${getA(3)}".
+      <p>You reported ${aTeams} for cross-team coordination, and your testing maturity is "${aTesting}".
       This indicates fundamental architecture fragmentation that must be addressed before automation can help.</p>
       <ul>
         <li>Map all interfaces between your ${teamSize}-person engineering organization using <span class="innominds-ref">Innominds iFusion</span></li>
@@ -1523,7 +1554,7 @@ function buildRecommendation() {
     <div class="phase-card">
       <h3>Phase 2: CI/CD Foundation</h3>
       <div class="phase-time">Months 4-8</div>
-      <p>Your current deployment cycle ("${getA(7)}") needs a modern CI/CD pipeline that spans embedded, edge, and cloud.</p>
+      <p>Your current delivery speed ("${aDeploy}") needs a modern CI/CD pipeline that spans embedded, edge, and cloud.</p>
       <ul>
         <li>Implement <span class="innominds-ref">KiteBoard</span> for unified build orchestration across repos</li>
         <li>Deploy basic HIL/SIL test infrastructure to catch integration defects early</li>
@@ -1545,7 +1576,7 @@ function buildRecommendation() {
     <div class="phase-card">
       <h3>Phase 1: Gap Analysis & Quick Wins</h3>
       <div class="phase-time">Months 1-2</div>
-      <p>You answered "${getA(2)}" regarding interface defects, and "${getA(1)}" for launch delays. These indicate specific gaps we can target for rapid improvement.</p>
+      <p>You answered "${aDefects}" regarding interface defects, and "${aDelay}" for launch delays. These indicate specific gaps we can target for rapid improvement.</p>
       <ul>
         <li>Conduct an <span class="innominds-ref">Innominds iFusion</span> assessment to map integration bottlenecks across your ${teamSize} engineers</li>
         <li>Identify and fix the top 3 interface contracts causing repeated integration failures</li>
@@ -1555,10 +1586,10 @@ function buildRecommendation() {
     <div class="phase-card">
       <h3>Phase 2: V&V Automation</h3>
       <div class="phase-time">Months 3-6</div>
-      <p>Your testing approach ("${getA(3)}") has room for significant automation. Moving to HIL/SIL will dramatically reduce your integration cycle.</p>
+      <p>Your testing maturity ("${aTesting}") has room for significant automation. Moving to HIL/SIL will dramatically reduce your integration cycle.</p>
       <ul>
         <li>Implement automated HIL/SIL test infrastructure for your ${document.getElementById('f_industry').value} products</li>
-        <li>Reduce commit-to-validated cycle from "${getA(7)}" to under 4 hours</li>
+        <li>Reduce commit-to-validated cycle from "${aDeploy}" to under 4 hours</li>
         <li>Deploy <span class="innominds-ref">iNNTACT</span> for continuous security validation in CI/CD pipeline</li>
       </ul>
     </div>
@@ -1568,7 +1599,7 @@ function buildRecommendation() {
       <p>With ${fmtDollar(revenue)} in connected product revenue at stake, your edge-cloud architecture needs to be production-hardened.</p>
       <ul>
         <li>Deploy <span class="innominds-ref">iDhi</span> for robust OTA with staged rollout and rollback</li>
-        <li>Implement full-stack observability for field diagnostics (your current RCA time: "${getA(9)}")</li>
+        <li>Implement full-stack observability for field diagnostics (your current RCA time: "${aRCA}")</li>
         <li>Leverage <span class="innominds-ref">Qualcomm</span> edge AI capabilities and <span class="innominds-ref">SIIX JV</span> for manufacturing scale</li>
       </ul>
     </div>`;
@@ -1577,7 +1608,7 @@ function buildRecommendation() {
     <div class="phase-card">
       <h3>Phase 1: Platform Productization</h3>
       <div class="phase-time">Months 1-2</div>
-      <p>Your organization has good foundations. Your answer "${getA(6)}" for repo fragmentation and "${getA(0)}" for team coordination suggest platform consolidation will unlock significant velocity.</p>
+      <p>Your organization has good foundations. Your answer "${aRepos}" for repo fragmentation and "${aTeams}" for team coordination suggest platform consolidation will unlock significant velocity.</p>
       <ul>
         <li>Use <span class="innominds-ref">iFusion</span> to formalize your shared platform architecture</li>
         <li>Create reusable product-line building blocks for your ${document.getElementById('f_industry').value} portfolio</li>
@@ -1587,7 +1618,7 @@ function buildRecommendation() {
     <div class="phase-card">
       <h3>Phase 2: AI-Augmented V&V</h3>
       <div class="phase-time">Months 3-4</div>
-      <p>You're at "${getA(3)}" for HW-SW testing. The next step is AI-driven test generation and digital twin simulation.</p>
+      <p>You're at "${aTesting}" for testing maturity. The next step is AI-driven test generation and digital twin simulation.</p>
       <ul>
         <li>Deploy AI-driven test generation to increase coverage while reducing manual effort</li>
         <li>Implement digital twin validation for pre-silicon and pre-production testing</li>
@@ -1600,7 +1631,7 @@ function buildRecommendation() {
       <p>With your ${teamSize}-person team and ${fmtDollar(revenue)} revenue, moving to predictive operations will differentiate your products.</p>
       <ul>
         <li>Deploy <span class="innominds-ref">iDhi</span> predictive analytics for proactive field maintenance</li>
-        <li>Implement telemetry-driven OTA updates (upgrade from "${getA(5)}")</li>
+        <li>Implement telemetry-driven OTA updates (upgrade from "${aOTA}")</li>
         <li>Leverage <span class="innominds-ref">Qualcomm</span> edge AI and <span class="innominds-ref">SIIX JV</span> for intelligent hardware optimization</li>
       </ul>
     </div>`;
@@ -1619,10 +1650,10 @@ function buildRecommendation() {
     <div class="phase-card">
       <h3>Track 2: Digital Twin Operations</h3>
       <div class="phase-time">Ongoing</div>
-      <p>Based on your testing maturity ("${getA(3)}"), you're ready for comprehensive digital twin simulation.</p>
+      <p>Based on your testing maturity ("${aTesting}"), you're ready for comprehensive digital twin simulation.</p>
       <ul>
         <li>Build full-fidelity digital twins for pre-production validation via <span class="innominds-ref">iFusion</span></li>
-        <li>Enable continuous virtual integration testing across all ${getA(0)} coordinating teams</li>
+        <li>Enable continuous virtual integration testing across all ${aTeams} coordinating teams</li>
         <li>Reduce physical prototype dependency by 60%+</li>
       </ul>
     </div>
@@ -1639,7 +1670,7 @@ function buildRecommendation() {
     <div class="phase-card">
       <h3>Track 4: Autonomous OTA</h3>
       <div class="phase-time">Ongoing</div>
-      <p>Your current OTA capability ("${getA(5)}") can evolve to fully autonomous, telemetry-driven deployments.</p>
+      <p>Your current OTA capability ("${aOTA}") can evolve to fully autonomous, telemetry-driven deployments.</p>
       <ul>
         <li>Implement predictive OTA triggered by device health telemetry via <span class="innominds-ref">iDhi</span></li>
         <li>Deploy canary releases with automatic rollback based on field metrics</li>
@@ -1767,7 +1798,7 @@ function _generatePDF(btn, origHTML) {
     EC: [56, 161, 105], SP: [214, 63, 63], LM: [128, 90, 213]
   };
 
-  // ── Helper functions ──
+  // â”€â”€ Helper functions â”€â”€
   function setFill(c) { doc.setFillColor(c[0], c[1], c[2]); }
   function setText(c) { doc.setTextColor(c[0], c[1], c[2]); }
   function setDraw(c) { doc.setDrawColor(c[0], c[1], c[2]); }
@@ -1818,7 +1849,7 @@ function _generatePDF(btn, origHTML) {
     doc.roundedRect(x, y, w, h, r, r, 'F');
   }
 
-  // ── DONUT CHART ──
+  // â”€â”€ DONUT CHART â”€â”€
   function drawDonut(cx, cy, outerR, innerR, score, maxScore, arcColor, holeColor) {
     // Background track circle
     setFill(COL_LGRAY);
@@ -1852,7 +1883,7 @@ function _generatePDF(btn, origHTML) {
     doc.text('/ ' + maxScore, cx, cy + 11, { align: 'center' });
   }
 
-  // ── RADAR / SPIDER CHART ──
+  // â”€â”€ RADAR / SPIDER CHART â”€â”€
   function drawRadar(cx, cy, radius, dims) {
     var keys = dimKeys;
     var n = keys.length;
@@ -1937,7 +1968,7 @@ function _generatePDF(btn, origHTML) {
     }
   }
 
-  // ── HORIZONTAL BAR CHART ──
+  // â”€â”€ HORIZONTAL BAR CHART â”€â”€
   function drawHBar(x, y, barWidth, items, maxVal) {
     var barH = 8;
     var gap = 16;
@@ -1965,9 +1996,9 @@ function _generatePDF(btn, origHTML) {
   }
 
 
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║                    PAGE 1: COVER                            ║
-  // ╚══════════════════════════════════════════════════════════════╝
+  // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+  // â•‘                    PAGE 1: COVER                            â•‘
+  // â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   darkBg();
 
   // Subtle geometric accent in top-right
@@ -2045,9 +2076,9 @@ function _generatePDF(btn, origHTML) {
   pageFooter(1);
 
 
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║                 PAGE 2: EXECUTIVE SUMMARY                   ║
-  // ╚══════════════════════════════════════════════════════════════╝
+  // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+  // â•‘                 PAGE 2: EXECUTIVE SUMMARY                   â•‘
+  // â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   doc.addPage();
   whiteBg();
 
@@ -2129,9 +2160,9 @@ function _generatePDF(btn, origHTML) {
   pageFooter(2);
 
 
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║                   PAGE 3: METHODOLOGY                       ║
-  // ╚══════════════════════════════════════════════════════════════╝
+  // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+  // â•‘                   PAGE 3: METHODOLOGY                       â•‘
+  // â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   doc.addPage();
   whiteBg();
 
@@ -2241,9 +2272,9 @@ function _generatePDF(btn, origHTML) {
   pageFooter(3);
 
 
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║                  PAGE 4: YOUR RESPONSES                     ║
-  // ╚══════════════════════════════════════════════════════════════╝
+  // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+  // â•‘                  PAGE 4: YOUR RESPONSES                     â•‘
+  // â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   doc.addPage();
   whiteBg();
 
@@ -2294,9 +2325,9 @@ function _generatePDF(btn, origHTML) {
   pageFooter(4);
 
 
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║                PAGE 5: COST OF INACTION                     ║
-  // ╚══════════════════════════════════════════════════════════════╝
+  // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+  // â•‘                PAGE 5: COST OF INACTION                     â•‘
+  // â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   doc.addPage();
   whiteBg();
 
@@ -2392,9 +2423,9 @@ function _generatePDF(btn, origHTML) {
   pageFooter(5);
 
 
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║                PAGE 6: PERSONALIZED ROADMAP                 ║
-  // ╚══════════════════════════════════════════════════════════════╝
+  // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+  // â•‘                PAGE 6: PERSONALIZED ROADMAP                 â•‘
+  // â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   doc.addPage();
   whiteBg();
 
@@ -2478,9 +2509,9 @@ function _generatePDF(btn, origHTML) {
   pageFooter(6);
 
 
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║                PAGE 7: ABOUT INNOMINDS                      ║
-  // ╚══════════════════════════════════════════════════════════════╝
+  // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+  // â•‘                PAGE 7: ABOUT INNOMINDS                      â•‘
+  // â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   doc.addPage();
   whiteBg();
 
@@ -2566,9 +2597,9 @@ function _generatePDF(btn, origHTML) {
   pageFooter(7);
 
 
-  // ╔══════════════════════════════════════════════════════════════╗
-  // ║                   PAGE 8: NEXT STEPS                        ║
-  // ╚══════════════════════════════════════════════════════════════╝
+  // â•”â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•—
+  // â•‘                   PAGE 8: NEXT STEPS                        â•‘
+  // â•šâ•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
   doc.addPage();
   darkBg();
 
@@ -2650,7 +2681,7 @@ function _generatePDF(btn, origHTML) {
   doc.text('Connected Product Integration Diagnostic  |  ' + today, ML, H - 18);
   doc.text('Confidential  |  Prepared for ' + company, ML, H - 13);
 
-  // ── Save ──
+  // â”€â”€ Save â”€â”€
   btn.innerHTML = '<span class="spinner"></span> Downloading...';
   doc.save('Connected_Product_Diagnostic_' + company.replace(/\s+/g, '_') + '.pdf');
   setTimeout(function() { btn.innerHTML = origHTML; btn.disabled = false; }, 1000);
@@ -2664,6 +2695,17 @@ function _generatePDF(btn, origHTML) {
 function getRoadmapForPDF() {
   const at = computed.answerTexts || [];
   const getA = (i) => at[i] ? at[i].a : 'N/A';
+  // Semantic lookups that work for both CTO and BU tracks:
+  const aTeams = findAnswer('teams must coordinate') || findAnswer('SKUs/variants') || getA(0);
+  const aDelay = findAnswer('launch slip') || findAnswer('delayed >4 weeks') || getA(1);
+  const aDefects = findAnswer('interface mismatches') || findAnswer('variant') || getA(2);
+  const aTesting = findAnswer('integration tests') || findAnswer('concept approved') || getA(3);
+  const aSecurity = findAnswer('security vulnerabilities') || findAnswer('BOM') || getA(4);
+  const aOTA = findAnswer('firmware updates') || findAnswer('competitor') || getA(5);
+  const aRepos = findAnswer('repos/build') || findAnswer('customer-reported') || getA(6);
+  const aDeploy = findAnswer('code committed') || findAnswer('roadmap items') || getA(7);
+  const aTalent = findAnswer('unfilled') || findAnswer('DELAYED entering') || getA(8);
+  const aRCA = findAnswer('root cause') || findAnswer('in-house capability') || getA(9);
   const company = document.getElementById('f_company').value;
   const teamSize = document.getElementById('f_teamsize').value;
   const revenue = fmtDollar(parseInt(document.getElementById('f_revenue').value));
@@ -2675,18 +2717,18 @@ function getRoadmapForPDF() {
         items: [
           'Map all interfaces across your ' + teamSize + '-person engineering organization (iFusion)',
           'Create unified architecture blueprint for ' + industry + ' product line',
-          'You reported "' + getA(0) + '" for team coordination - address interface fragmentation first'
+          'You reported "' + aTeams + '" for team coordination - address interface fragmentation first'
         ]},
       { title: 'Phase 2: CI/CD Foundation', timeline: 'Months 4-8',
         items: [
-          'Your deploy cycle ("' + getA(7) + '") needs modern CI/CD spanning embedded to cloud (KiteBoard)',
+          'Your delivery speed ("' + aDeploy + '") needs modern CI/CD spanning embedded to cloud (KiteBoard)',
           'Deploy basic HIL/SIL test infrastructure',
-          'Establish OTA update capability (iDhi) - currently "' + getA(5) + '"'
+          'Establish OTA update capability (iDhi) - currently "' + aOTA + '"'
         ]},
       { title: 'Phase 3: Shared Platform Layer', timeline: 'Months 9-12',
         items: [
           'Extract shared middleware and HAL layers for variant reuse',
-          'Implement security baseline (iNNTACT) - you reported "' + getA(4) + '" for security vulnerabilities',
+          'Implement security baseline (iNNTACT) - you reported "' + aSecurity + '" for security vulnerabilities',
           'Leverage SIIX JV for HW-SW co-design optimization'
         ]}
     ];
@@ -2694,41 +2736,41 @@ function getRoadmapForPDF() {
     return [
       { title: 'Phase 1: Gap Analysis & Quick Wins', timeline: 'Months 1-2',
         items: [
-          'Interface defects at "' + getA(2) + '" - identify top 3 interface contracts to fix (iFusion)',
-          'Launch delays of "' + getA(1) + '" - deploy KiteBoard for cross-team visibility',
+          'Interface defects at "' + aDefects + '" - identify top 3 interface contracts to fix (iFusion)',
+          'Launch delays of "' + aDelay + '" - deploy KiteBoard for cross-team visibility',
           'Quick wins across ' + teamSize + ' engineers for immediate velocity improvement'
         ]},
       { title: 'Phase 2: V&V Automation', timeline: 'Months 3-6',
         items: [
-          'Current testing: "' + getA(3) + '" - implement automated HIL/SIL for ' + industry,
-          'Reduce commit-to-validated cycle from "' + getA(7) + '" to under 4 hours',
+          'Testing maturity: "' + aTesting + '" - implement automated HIL/SIL for ' + industry,
+          'Reduce commit-to-validated cycle from "' + aDeploy + '" to under 4 hours',
           'Deploy iNNTACT for continuous security validation in CI/CD'
         ]},
       { title: 'Phase 3: Edge-Cloud Hardening', timeline: 'Months 7-9',
         items: [
           revenue + ' in revenue requires production-hardened edge-cloud architecture',
-          'Deploy iDhi for robust OTA - upgrade from "' + getA(5) + '"',
-          'Full-stack observability for field diagnostics (RCA currently: "' + getA(9) + '")'
+          'Deploy iDhi for robust OTA - upgrade from "' + aOTA + '"',
+          'Full-stack observability for field diagnostics (RCA currently: "' + aRCA + '")'
         ]}
     ];
   } else if (computed.tier === 3) {
     return [
       { title: 'Phase 1: Platform Productization', timeline: 'Months 1-2',
         items: [
-          'Repo fragmentation "' + getA(6) + '" and team coordination "' + getA(0) + '" - consolidate platform (iFusion)',
+          'Repo fragmentation "' + aRepos + '" and team coordination "' + aTeams + '" - consolidate platform (iFusion)',
           'Create reusable building blocks for ' + industry + ' portfolio',
           'Reduce variant effort through KiteBoard configuration management'
         ]},
       { title: 'Phase 2: AI-Augmented V&V', timeline: 'Months 3-4',
         items: [
-          'Current HW-SW testing: "' + getA(3) + '" - add AI-driven test generation',
+          'Testing maturity: "' + aTesting + '" - add AI-driven test generation',
           'Implement digital twin validation for pre-production testing',
           'Integrate iNNTACT for automated security regression'
         ]},
       { title: 'Phase 3: Predictive Field Intelligence', timeline: 'Months 5-6',
         items: [
           teamSize + '-person team with ' + revenue + ' revenue - move to predictive operations (iDhi)',
-          'Telemetry-driven OTA updates - upgrade from "' + getA(5) + '"',
+          'Telemetry-driven OTA updates - upgrade from "' + aOTA + '"',
           'Leverage Qualcomm edge AI and SIIX JV for intelligent HW optimization'
         ]}
     ];
@@ -2742,8 +2784,8 @@ function getRoadmapForPDF() {
         ]},
       { title: 'Track 2: Digital Twin Operations', timeline: 'Ongoing',
         items: [
-          'Full-fidelity digital twins via iFusion (testing maturity: "' + getA(3) + '")',
-          'Continuous virtual integration across ' + getA(0) + ' teams',
+          'Full-fidelity digital twins via iFusion (testing maturity: "' + aTesting + '")',
+          'Continuous virtual integration across ' + aTeams + ' teams',
           'Reduce physical prototype dependency by 60%+'
         ]},
       { title: 'Track 3: Zero-Trust Security', timeline: 'Ongoing',
@@ -2754,7 +2796,7 @@ function getRoadmapForPDF() {
         ]},
       { title: 'Track 4: Autonomous OTA', timeline: 'Ongoing',
         items: [
-          'Current OTA: "' + getA(5) + '" - evolve to predictive deployment (iDhi)',
+          'Current OTA: "' + aOTA + '" - evolve to predictive deployment (iDhi)',
           'Canary releases with automatic rollback from field metrics',
           'Self-healing firmware with SIIX JV hardware-level recovery'
         ]}
@@ -2784,7 +2826,7 @@ function getRoadmapForPDF() {
 }
 
 // ================================================================
-// AUTOSAVE — persist form data to localStorage
+// AUTOSAVE â€” persist form data to localStorage
 // ================================================================
 const SAVE_KEY = 'innominds_diagnostic_v4';
 
